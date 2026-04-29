@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { BodyText, Button, TextButton, Pill, PillType, IconV2, Avatar, Headline } from '@bamboohr/fabric';
 import type { CalibrationFlag, ReviewRating } from '../data/performanceCycleData';
+import { DistributionOutlierSheet } from './DistributionOutlierSheet';
+import { SimilarEmployeesSheet } from './SimilarEmployeesSheet';
+import { RecencyBiasSheet } from './RecencyBiasSheet';
 import './stages.css';
 
 interface CalibrationFlagCardProps {
   flag: CalibrationFlag;
+  onResolve?: (note: string) => void;
 }
 
 const ratingLabel = (r: ReviewRating) =>
@@ -19,10 +23,16 @@ const flagTypeMeta = {
   'recency-bias': { label: 'Recency bias', icon: 'clock-rotate-left-regular', color: 'discovery-strong' },
 } as const;
 
-export function CalibrationFlagCard({ flag }: CalibrationFlagCardProps) {
+export function CalibrationFlagCard({ flag, onResolve }: CalibrationFlagCardProps) {
   const [expanded, setExpanded] = useState(true);
   const [resolved, setResolved] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const meta = flagTypeMeta[flag.type];
+
+  const handleSheetResolve = (note: string) => {
+    setResolved(true);
+    onResolve?.(note);
+  };
 
   return (
     <div className={`pc-flag-card${resolved ? ' pc-flag-card--resolved' : ''}`}>
@@ -157,11 +167,41 @@ export function CalibrationFlagCard({ flag }: CalibrationFlagCardProps) {
 
           <div className="pc-flag-actions">
             <TextButton onClick={() => setResolved(true)}>Mark Resolved</TextButton>
-            <Button size="small" variant="outlined" color="secondary">
+            <Button
+              size="small"
+              variant="outlined"
+              color="secondary"
+              onClick={() => setSheetOpen(true)}
+            >
               Open in Calibration
             </Button>
           </div>
         </div>
+      )}
+
+      {flag.type === 'distribution-outlier' && (
+        <DistributionOutlierSheet
+          flag={flag}
+          isOpen={sheetOpen}
+          onClose={() => setSheetOpen(false)}
+          onResolve={handleSheetResolve}
+        />
+      )}
+      {flag.type === 'similar-employees' && (
+        <SimilarEmployeesSheet
+          flag={flag}
+          isOpen={sheetOpen}
+          onClose={() => setSheetOpen(false)}
+          onResolve={handleSheetResolve}
+        />
+      )}
+      {flag.type === 'recency-bias' && (
+        <RecencyBiasSheet
+          flag={flag}
+          isOpen={sheetOpen}
+          onClose={() => setSheetOpen(false)}
+          onResolve={handleSheetResolve}
+        />
       )}
     </div>
   );

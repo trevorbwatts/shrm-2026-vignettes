@@ -1,0 +1,26 @@
+.oe-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.oe-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.oe-tabs {
+  margin-top: -8px;
+}
+
+.oe-stage-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 24px breathing room between Section.Header and its content */
+.oe-page [data-fabric-component="Section"] > *:first-child + * {
+  margin-top: 24px;
+}

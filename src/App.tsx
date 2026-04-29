@@ -48,6 +48,8 @@ const NewEmployeePage = lazy(() => import('./pages/NewEmployeePage/NewEmployeePa
 const Automations = lazy(() => import('./pages/Automations'));
 const OfferAcceptanceReport = lazy(() => import('./pages/OfferAcceptanceReport'));
 const PerformanceCycle = lazy(() => import('./pages/PerformanceCycle'));
+const OpenEnrollment = lazy(() => import('./pages/OpenEnrollment'));
+const PayrollClose = lazy(() => import('./pages/PayrollClose'));
 
 // Prototype Index Page
 function PrototypeIndex() {
@@ -122,6 +124,18 @@ function PrototypeIndex() {
       name: 'Performance Cycle',
       path: '/performance-cycle',
       description: 'Q2 review cycle — setup, calibration flags, comp recommendations, post-cycle dashboard',
+      status: 'ready'
+    },
+    {
+      name: 'Open Enrollment',
+      path: '/open-enrollment',
+      description: '2026 benefits enrollment — completion dashboard, tiered reminders, exceptions queue, Benefits Assistant activity',
+      status: 'ready'
+    },
+    {
+      name: 'Payroll Close',
+      path: '/payroll-close',
+      description: 'Payroll approval — Thursday close with auto-approved timesheets, exceptions queue, Payroll Assistant activity',
       status: 'ready'
     },
     {
@@ -402,6 +416,8 @@ function App() {
         <Route path="/automations" element={<FullLayout><Automations /></FullLayout>} />
         <Route path="/reports/offer-acceptance" element={<FullLayout><OfferAcceptanceReport /></FullLayout>} />
         <Route path="/performance-cycle" element={<FullLayout><PerformanceCycle /></FullLayout>} />
+        <Route path="/open-enrollment" element={<FullLayout><OpenEnrollment /></FullLayout>} />
+        <Route path="/payroll-close" element={<FullLayout><PayrollClose /></FullLayout>} />
         <Route path="/chat" element={<FullLayout><Chat /></FullLayout>} />
         <Route path="/hiring/create-job" element={<FullLayout><CreateJobOpening /></FullLayout>} />
         <Route path="/hiring/job/:id" element={<FullLayout><JobOpeningDetail /></FullLayout>} />

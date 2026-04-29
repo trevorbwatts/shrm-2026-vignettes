@@ -1,0 +1,26 @@
+.pcl-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pcl-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pcl-tabs {
+  margin-top: -8px;
+}
+
+.pcl-stage-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 24px breathing room between Section.Header and its content */
+.pcl-page [data-fabric-component="Section"] > *:first-child + * {
+  margin-top: 24px;
+}

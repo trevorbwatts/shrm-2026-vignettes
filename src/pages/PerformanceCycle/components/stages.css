@@ -487,6 +487,215 @@
   top: 16px;
 }
 
+/* ---------- Calibration sheets (shared) ---------- */
+.pc-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 8px;
+}
+
+.pc-sheet-subhead {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: -4px;
+}
+
+.pc-summary-cell {
+  max-width: 480px;
+}
+
+/* Compose sheet (heads-up draft) */
+.pc-compose {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+/* Inline pair differentiators (used in SimilarEmployeesSheet) */
+.pc-pair-diffs--inline {
+  padding: 12px 16px;
+  background: var(--fabric-surface-color-neutral-weakest, #fafafa);
+  border-radius: 8px;
+}
+
+/* Side-by-side compare grid */
+.pc-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .pc-compare-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pc-compare-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--fabric-border-color-neutral-weak, #e0e0e0);
+  border-radius: 12px;
+  background: var(--fabric-surface-color-neutral-inverted, #ffffff);
+}
+
+.pc-compare-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pc-compare-head > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pc-compare-rating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: var(--fabric-surface-color-neutral-weakest, #fafafa);
+  border-radius: 8px;
+}
+
+.pc-compare-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pc-compare-bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pc-compare-bullets li {
+  position: relative;
+  padding-left: 14px;
+}
+
+.pc-compare-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--fabric-surface-color-primary-medium, #6B7280);
+}
+
+.pc-compare-quotes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pc-compare-quote {
+  padding: 10px 12px;
+  background: var(--fabric-surface-color-neutral-weakest, #fafafa);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pc-compare-peer {
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--fabric-surface-color-neutral-weakest, #fafafa);
+  border-radius: 8px;
+}
+
+.pc-compare-peer > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+/* Recency bias sheet */
+.pc-recency-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .pc-recency-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pc-recency-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--fabric-border-color-neutral-weak, #e0e0e0);
+  border-radius: 12px;
+  background: var(--fabric-surface-color-neutral-inverted, #ffffff);
+}
+
+.pc-recency-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--fabric-surface-color-neutral-weakest, #fafafa);
+  border-radius: 8px;
+}
+
+.pc-recency-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pc-recency-context-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pc-recency-shift {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.pc-recency-adjust {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--fabric-border-color-neutral-weak, #e0e0e0);
+  border-radius: 12px;
+  background: var(--fabric-surface-color-neutral-inverted, #ffffff);
+}
+
+.pc-timeline-dot--positive {
+  background: var(--fabric-surface-color-success-medium, #10B981);
+}
+
+.pc-timeline-dot--negative {
+  background: var(--fabric-surface-color-warning-medium, #F59E0B);
+}
+
 /* ---------- Co-pilot panel ---------- */
 .pc-copilot {
   background: var(--fabric-surface-color-discovery-weak, #f5f3ff);

@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { Headline, BodyText, Avatar, Button, InlineMessage, IconV2, IconButton, StyledBox, ActionTile } from '@bamboohr/fabric';
 import { AIChatPrompt } from './components/AIChatPrompt';
 import { WhileYouWereAwayCard } from './components/WhileYouWereAwayCard';
+import { OnYourPlateCard } from './components/OnYourPlateCard';
 import { RecognitionInsightCard } from './components/RecognitionInsightCard';
 import { TeamHealthCard } from './components/TeamHealthCard';
 import { WhoIsOutCard } from './components/WhoIsOutCard';
@@ -1714,6 +1715,13 @@ export function HRManagerHome() {
       {isInitialState && (
         <div className={`hr-home-wywa wywa-mount ${promptsFading ? 'hr-home-wywa--fading' : ''}`}>
           <WhileYouWereAwayCard onResolveAction={(message) => setSlidedownMessage(message)} />
+        </div>
+      )}
+
+      {/* On your plate - persistent active work, only visible in initial state */}
+      {isInitialState && (
+        <div className={`hr-home-on-your-plate wywa-mount ${promptsFading ? 'hr-home-on-your-plate--fading' : ''}`}>
+          <OnYourPlateCard />
         </div>
       )}
 

@@ -346,7 +346,99 @@ export const assessmentContexts: Record<string, AssessmentContext> = {
       { date: 'Mar 30', topic: 'Cross-team sync', highlight: 'Alex\'s recap was the artifact PM and Design referenced for the next two weeks.' },
     ],
   },
+  e2: {
+    employeeId: 'e2',
+    goals: [
+      'Lead the analytics workspace foundation rewrite',
+      'Land the new query engine with sub-second p95',
+      'Hire and ramp one senior backend engineer',
+    ],
+    oneOnOneNotes: [
+      { date: 'Apr 14', quote: 'Maya pushed the query engine to GA two weeks ahead of plan. Customer escalations on dashboard load times disappeared the week we shipped.' },
+      { date: 'Mar 26', quote: 'She owned the Eng/Product alignment for the analytics rewrite end-to-end. Daniel Chen flagged it as the cleanest cross-team kickoff he\'s seen.' },
+      { date: 'Mar 11', quote: 'Maya is starting to mentor the new senior hire. Already saving me cycles I used to spend onboarding.' },
+    ],
+    peerFeedback: [
+      { authorName: 'Alex Chen', authorPhotoUrl: 'https://i.pravatar.cc/150?u=alex-chen', quote: 'Maya is the engineer I trust to give me an honest read on a tricky design tradeoff. She raises the bar across the team.' },
+      { authorName: 'Zara Ibrahim', authorPhotoUrl: 'https://i.pravatar.cc/150?u=zara-ibrahim', quote: 'Maya\'s Eng/Product ritual on the analytics rewrite is the only reason we stayed on plan. Worth replicating.' },
+    ],
+    winsRecord: [
+      { date: 'Apr 22', entry: 'Query engine GA shipped two weeks early; p95 dashboard load 1.1s (target 1.5s).' },
+      { date: 'Mar 18', entry: 'Closed senior backend hire that the team had been searching for since January.' },
+      { date: 'Feb 24', entry: 'Led the Eng/Product alignment that unblocked the analytics workspace.' },
+    ],
+    meetingHighlights: [
+      { date: 'Apr 17', topic: 'Query engine GA review', highlight: 'Maya walked execs through the rollout and the customer impact data. Confidence high after.' },
+      { date: 'Mar 06', topic: 'Analytics rewrite kickoff', highlight: 'Maya\'s scoping doc was the artifact three teams referenced for the rest of the cycle.' },
+    ],
+  },
+  e6: {
+    employeeId: 'e6',
+    goals: [
+      'Hit Q2 quota of $4.2M in pipeline closed',
+      'Expand 3 strategic accounts within existing book',
+      'Mentor the new AE through ramp',
+    ],
+    oneOnOneNotes: [
+      { date: 'Apr 24', quote: 'Theo recovered the Sentry account after the March escalation and expanded the contract by $180K. Quietly impressive.' },
+      { date: 'Mar 20', quote: 'Talked through the lost competitive bake-off. Theo took the loss seriously and brought back three tactical changes for the next deal.' },
+      { date: 'Feb 10', quote: 'Closed the largest deal of FY26 ($1.4M). Walked through the multi-thread strategy he ran for the last six weeks of the deal.' },
+    ],
+    peerFeedback: [
+      { authorName: 'Marcus Webb', authorPhotoUrl: 'https://i.pravatar.cc/150?u=marcus-webb', quote: 'Theo is the AE I send into deals where the customer is on the fence. He runs the cleanest discovery on the team.' },
+      { authorName: 'Riya Khanna', authorPhotoUrl: 'https://i.pravatar.cc/150?u=riya-khanna', quote: 'Theo handed me the cleanest CSM handoff packet I\'ve gotten this year on the Sentry expansion.' },
+    ],
+    winsRecord: [
+      { date: 'Apr 22', entry: 'Sentry account recovered + expanded contract by $180K.' },
+      { date: 'Feb 28', entry: 'Lost competitive bake-off ($600K) — brought back tactical learnings.' },
+      { date: 'Jan 12', entry: 'Closed largest deal of FY26 ($1.4M).' },
+    ],
+    meetingHighlights: [
+      { date: 'Apr 24', topic: 'Sentry expansion review', highlight: 'Theo presented the recovery playbook he ran. Marcus asked him to run a brown-bag for the team.' },
+      { date: 'Jan 14', topic: 'Q1 win review', highlight: 'Theo walked the team through the FY26 deal multi-thread strategy.' },
+    ],
+  },
 };
+
+export interface SarahReviewSummary {
+  employeeId: string;
+  employeeName: string;
+  jobTitle: string;
+  photoUrl: string;
+  rating: ReviewRating;
+  reviewScore: number;
+  summaryExcerpt: string;
+}
+
+export const sarahOkaforReviews: SarahReviewSummary[] = [
+  { employeeId: 'e1', employeeName: 'Alex Chen', jobTitle: 'Senior Software Engineer', photoUrl: 'https://i.pravatar.cc/150?u=alex-chen', rating: 'exceeds', reviewScore: 88, summaryExcerpt: 'Alex consistently exceeded the team bar this cycle, leading the onboarding revamp end-to-end and mentoring Ben through ramp.' },
+  { employeeId: 'sk1', employeeName: 'Ben Park', jobTitle: 'Software Engineer', photoUrl: 'https://i.pravatar.cc/150?u=ben-park', rating: 'exceeds', reviewScore: 84, summaryExcerpt: 'Ben grew significantly this cycle. Took on the data layer rewrite and shipped without major issues.' },
+  { employeeId: 'sk2', employeeName: 'Priya Sharma', jobTitle: 'Senior Software Engineer', photoUrl: 'https://i.pravatar.cc/150?u=priya-sharma', rating: 'exceeds', reviewScore: 90, summaryExcerpt: 'Priya owned the API redesign and shipped on time. Strong technical work and partnered well with PM.' },
+  { employeeId: 'sk3', employeeName: 'Marcus Diaz', jobTitle: 'Software Engineer', photoUrl: 'https://i.pravatar.cc/150?u=marcus-diaz', rating: 'exceeds', reviewScore: 86, summaryExcerpt: 'Marcus made strong contributions to the platform team and has been a great culture add.' },
+  { employeeId: 'sk4', employeeName: 'Helena Vu', jobTitle: 'Senior Software Engineer', photoUrl: 'https://i.pravatar.cc/150?u=helena-vu', rating: 'exceeds', reviewScore: 87, summaryExcerpt: 'Helena delivered a clean cycle. Owned the auth migration and unblocked teammates regularly.' },
+  { employeeId: 'sk5', employeeName: 'Roman Velazquez', jobTitle: 'Software Engineer', photoUrl: 'https://i.pravatar.cc/150?u=roman-velazquez', rating: 'meets', reviewScore: 76, summaryExcerpt: 'Roman delivered on commitments and continues to grow. On track for the next level.' },
+  { employeeId: 'sk6', employeeName: 'Imani Bryant', jobTitle: 'Senior Software Engineer', photoUrl: 'https://i.pravatar.cc/150?u=imani-bryant', rating: 'meets', reviewScore: 79, summaryExcerpt: 'Imani is a steady contributor. Solid quarter, no major flags.' },
+];
+
+export const sarahHeadsUpDraft = `Hi Sarah,
+
+Quick one before calibration this Thursday — when I looked across this cycle's review distribution, your team came in noticeably higher than peer engineering managers (5 of 7 Exceeds, vs. ~28% across peers). I'm not flagging this as a problem; the team is clearly doing strong work. But I wanted to give you a heads-up that calibration may surface this and ask whether you'd like to walk through your reasoning before the session — happy to make time tomorrow if helpful.
+
+— Maya`;
+
+export interface RecencyTimelinePoint {
+  date: string;
+  event: string;
+  impact: 'positive' | 'negative';
+  inferredRatingShift: number;
+}
+
+export const theoMarshTimeline: RecencyTimelinePoint[] = [
+  { date: 'Jan 12', event: 'Closed largest deal of FY26 ($1.4M)', impact: 'positive', inferredRatingShift: +6 },
+  { date: 'Feb 28', event: 'Lost competitive bake-off ($600K)', impact: 'negative', inferredRatingShift: -4 },
+  { date: 'Mar 18', event: 'Customer complaint escalated to leadership', impact: 'negative', inferredRatingShift: -5 },
+  { date: 'Apr 22', event: 'Recovered account, expanded contract by $180K', impact: 'positive', inferredRatingShift: +3 },
+];
 
 export const stageStats = {
   setup: { questionsGenerated: 47, roleGroups: 12, employeesCovered: 47 },

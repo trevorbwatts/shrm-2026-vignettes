@@ -32,7 +32,7 @@ export function RecognitionInsightCard({ onSendComplete }: RecognitionInsightCar
         header={
           <Gridlet.Header
             title="Worth Your Attention"
-            icon={<IconV2 name="sparkles-solid" color="discovery-strong" size={16} />}
+            icon={<IconV2 name="sparkles-solid" color="success-strong" size={16} />}
             right={
               <button
                 type="button"

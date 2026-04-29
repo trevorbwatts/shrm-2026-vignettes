@@ -88,6 +88,20 @@
   transform: translateY(-10px);
 }
 
+.hr-home-on-your-plate {
+  max-width: 672px;
+  width: 100%;
+  padding: 0 0 24px 0;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.hr-home-on-your-plate--fading {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
 /* ==================== INITIAL PROMPTS ==================== */
 .hr-home-initial-prompts {
   max-width: 672px;
