@@ -70,8 +70,21 @@
   padding-bottom: 24px;
 }
 
+/* Stage: holds the page content and any overlay panels (e.g. ReportPanel).
+   overflow: hidden clips overlays during slide-in animations so they emerge
+   from behind sibling panels (e.g. Ask) rather than animating on top. */
+.app-content-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+}
+
 /* Page content - fills remaining viewport height; content scrolls inside */
-.app-content-area > [data-fabric-component="PageCapsule"] {
+.app-content-area > [data-fabric-component="PageCapsule"],
+.app-content-stage > [data-fabric-component="PageCapsule"] {
   flex: 1 !important;
   min-height: 0 !important;
   overflow-y: auto !important;

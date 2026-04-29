@@ -1,0 +1,93 @@
+.wywa-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 4px 0;
+}
+
+.wywa-dismiss-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.15s ease;
+}
+
+.wywa-dismiss-button:hover {
+  background-color: var(--surface-neutral-x-weak);
+}
+
+.wywa-headline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wywa-headline-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+}
+
+.wywa-exceptions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-neutral-x-weak);
+}
+
+.wywa-exceptions-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wywa-exceptions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wywa-exception-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background-color: var(--surface-warning-weak);
+  border-radius: 8px;
+}
+
+.wywa-exception-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.wywa-empty {
+  padding: 12px 0;
+}
+
+.wywa-footer {
+  padding-top: 12px;
+  border-top: 1px solid var(--border-neutral-x-weak);
+}
+
+/* Allow Gridlet to fit content height in the initial-state mount */
+.wywa-mount [data-fabric-component="Gridlet"] {
+  height: auto !important;
+}
+.wywa-mount [data-fabric-component="Gridlet"] > section,
+.wywa-mount [data-fabric-component="Gridlet"] > section > div {
+  height: auto !important;
+  flex: none !important;
+}

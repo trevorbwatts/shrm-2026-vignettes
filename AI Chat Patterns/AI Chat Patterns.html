@@ -1,0 +1,357 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>AI Chat Patterns · BambooHR Fabric</title>
+<link rel="stylesheet" href="fabric/colors_and_type.css">
+<link rel="stylesheet" href="chat-patterns.css?v=2">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="patterns/primitives.jsx"></script>
+<script type="text/babel" src="patterns/cot.jsx"></script>
+<script type="text/babel" src="patterns/choices.jsx"></script>
+<script type="text/babel" src="patterns/artifacts.jsx"></script>
+<script type="text/babel" src="patterns/system-objects.jsx"></script>
+<script type="text/babel" src="patterns/viz.jsx"></script>
+<script type="text/babel" src="patterns/misc.jsx"></script>
+<script type="text/babel" src="patterns/inline-chat.jsx"></script>
+<script type="text/babel" src="patterns/shifts.jsx"></script>
+<script type="text/babel" src="patterns/filter-dropdown.jsx"></script>
+
+<script type="text/babel">
+
+// Helper: center content in an artboard with padding. Fills the artboard
+// height exactly — the artboard's own overflow:hidden clips. Giving AB a
+// fixed 900px height broke vertical centering inside the short cards
+// (content floated ~450px below the visible area and looked blank).
+function AB({ children, align = 'center', pad = 24, bg = '#fff' }) {
+  return (
+    <div style={{
+      width: '100%', height: '100%', boxSizing: 'border-box',
+      background: bg, padding: pad, overflow: 'auto',
+      display: 'flex', alignItems: align === 'top' ? 'flex-start' : 'center',
+      justifyContent: 'center'
+    }}>
+      <div style={{ width: '100%' }}>{children}</div>
+    </div>);
+
+}
+
+// AI message wrapper for demo cards. Both user and AI messages left-align
+// in a single column; no avatar — the prelude reads as a prior turn in the
+// thread and the AI response follows underneath.
+function ABMsg({ children, prelude, meta }) {
+  return (
+    <AB align="top" pad={24}>
+      {prelude &&
+      <div className="msg msg-user" style={{ marginBottom: 14 }}>
+          <div className="msg-body">{prelude}</div>
+        </div>
+      }
+      <div className="msg msg-ai">
+        <div className="msg-body">
+          {meta && <div style={{ fontSize: 12, color: 'var(--gray-6)', marginBottom: 8 }}>{meta}</div>}
+          {children}
+        </div>
+      </div>
+    </AB>);
+
+}
+
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="cot" title="Chain-of-thought reasoning" subtitle="How the AI shows its work — compact, streaming, and step-list.">
+        <DCArtboard id="cot-compact" label="Compact · collapsed pill" width={520} height={360}>
+          <ABMsg prelude="How much PTO does Maria Jones have left?">
+            <CoTCompact />
+            <div style={{ marginTop: 14, fontSize: 14, color: 'var(--gray-9)' }}>
+              Maria has <b>12.5 days</b> of PTO remaining for the year.
+            </div>
+          </ABMsg>
+        </DCArtboard>
+        <DCArtboard id="cot-streaming" label="Streaming · live steps" width={520} height={360}>
+          <ABMsg prelude="How much PTO does Maria Jones have left?">
+            <CoTStreaming />
+          </ABMsg>
+        </DCArtboard>
+        <DCArtboard id="cot-step" label="Step-list · numbered" width={520} height={520}>
+          <ABMsg prelude="What's the Q3 perf cycle status in Engineering?">
+            <CoTStepList />
+          </ABMsg>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="choice" title="JOHN-Choice selectors" subtitle="How the AI asks the user to pick from options mid-conversation.">
+        <DCArtboard id="mc-card" label="Multiple choice · card list" width={520} height={520}>
+          <ABMsg prelude="Help me write a req for a Senior Backend Engineer.">
+            <div style={{ fontSize: 14, color: 'var(--gray-9)', marginBottom: 12 }}>Before I draft, let me check a few things.</div>
+            <MultipleChoice />
+          </ABMsg>
+        </DCArtboard>
+        <DCArtboard id="mc-chips" label="Multiple choice · chips" width={520} height={320}>
+          <ABMsg prelude="Draft a monthly HR digest for the leadership team.">
+            <MultipleChoiceChips />
+          </ABMsg>
+        </DCArtboard>
+        <DCArtboard id="sc-radio" label="Single choice · radio list" width={520} height={460}>
+          <ABMsg prelude="Show me hiring activity.">
+            <SingleChoice />
+          </ABMsg>
+        </DCArtboard>
+        <DCArtboard id="sc-seg" label="Single choice · segmented" width={520} height={320}>
+          <ABMsg prelude="Schedule a recurring HR digest.">
+            <SingleChoiceSegmented />
+          </ABMsg>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="todo" title="To-do list & done confirmation" subtitle="Progress on a multi-step task, and what confirmation looks like at the end.">
+        <DCArtboard id="todo" label="To-do list · in progress" width={520} height={420}>
+          <AB align="top" pad={24}>
+            <TodoList />
+          </AB>
+        </DCArtboard>
+        <DCArtboard id="todo-muted" label="To-do · muted (AI working)" width={520} height={480}>
+          <ABMsg prelude="Post the senior backend req and kick off sourcing.">
+            <div style={{ fontSize: 14, color: 'var(--gray-9)', marginBottom: 10 }}>I'll handle the launch — updating below as I go.</div>
+            <TodoList variant="muted" />
+          </ABMsg>
+        </DCArtboard>
+        <DCArtboard id="todo-muted-collapsed" label="To-do · muted & collapsed" width={520} height={320}>
+          <ABMsg prelude="Post the senior backend req and kick off sourcing.">
+            <div style={{ fontSize: 14, color: 'var(--gray-9)', marginBottom: 10 }}>I'll handle the launch — updating below as I go.</div>
+            <TodoList variant="muted" defaultCollapsed={true} />
+          </ABMsg>
+        </DCArtboard>
+        <DCArtboard id="todo-ask" label="To-do · pinned in Ask window" width={420} height={740}>
+          <AB align="top" pad={10}>
+            <TodoListInAskWindow />
+          </AB>
+        </DCArtboard>
+        <DCArtboard id="done-simple" label="Done · compact banner" width={520} height={300}>
+          <ABMsg prelude="Request 5 days of PTO Dec 22–26.">
+            <DoneConfirm />
+          </ABMsg>
+        </DCArtboard>
+        <DCArtboard id="done-minimal" label="Done · inline one-liner" width={520} height={240}>
+          <ABMsg prelude="Run the bonus payout for sales — exclude Jamie (on leave).">
+            <DoneConfirmMinimal />
+          </ABMsg>
+        </DCArtboard>
+        <DCArtboard id="done-detail" label="Done · detail summary" width={520} height={460}>
+          <ABMsg prelude="Send the offer for Priya at the approved package.">
+            <div style={{ fontSize: 14, color: 'var(--gray-9)', marginBottom: 10 }}>Done — here's what went out.</div>
+            <DoneConfirmDetail />
+          </ABMsg>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="artifacts" title="SARAH- Artifact cards" subtitle="Files the AI produces: markdown, image, spreadsheet, code, and HTML previews.">
+        <DCArtboard id="a-md" label="Markdown" width={520} height={440}>
+          <ABMsg prelude="Draft our Q4 headcount plan."><ArtifactMarkdown /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="a-img" label="Image" width={520} height={460}>
+          <ABMsg prelude="Generate an org chart for Engineering."><ArtifactImage /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="a-csv" label="Spreadsheet" width={520} height={440}>
+          <ABMsg prelude="Pull headcount, open reqs, and attrition by dept."><ArtifactCSV /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="a-code" label="Code snippet" width={520} height={420}>
+          <ABMsg prelude="Write a Python helper for PTO accrual."><ArtifactCode /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="a-html" label="HTML preview" width={520} height={460}>
+          <ABMsg prelude="Make a one-pager summarizing 2027 benefits."><ArtifactHTML /></ABMsg>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="sysobjects" title="KELSI- System object cards" subtitle="References to records that exist in BambooHR — employees, reports, reqs, policies, training, benefits.">
+        <DCArtboard id="so-emp" label="Employee" width={520} height={220}>
+          <ABMsg prelude="Who owns the mobile checkout project?"><SOEmployee /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="so-rep" label="Report" width={520} height={280}>
+          <ABMsg prelude="Show me the turnover report."><SOReport /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="so-job" label="Job opening" width={520} height={340}>
+          <ABMsg prelude="How's the Senior Backend req doing?"><SOJobOpening /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="so-pol" label="Policy document" width={520} height={280}>
+          <ABMsg prelude="What's our PTO policy?"><SOPolicy /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="so-tr" label="Training" width={520} height={320}>
+          <ABMsg prelude="Do I have any trainings due?"><SOTraining /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="so-ben" label="Benefit plan" width={520} height={320}>
+          <ABMsg prelude="What's my medical plan?"><SOBenefitPlan /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="so-inline" label="Inline mention" width={520} height={220}>
+          <ABMsg prelude="Who's out next week?">
+            <div style={{ fontSize: 14, color: 'var(--gray-9)', lineHeight: 1.7 }}>
+              <SOInlineRef name="Maria Jones" /> is out Nov 24–28, and <SOInlineRef name="Jonah Keller" /> is on a half-day Wednesday.
+            </div>
+          </ABMsg>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="viz" title="CHRIS- Data viz cards" subtitle="Charts and tables the AI renders in place of prose.">
+        <DCArtboard id="v-kpi" label="KPI · stat with sparkline" width={420} height={400}>
+          <ABMsg prelude="How's turnover tracking?"><VizKPI /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="v-bar" label="Horizontal bar" width={540} height={520}>
+          <ABMsg prelude="Show me headcount by department."><VizBar /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="v-line" label="Trend line · 12 months" width={560} height={420}>
+          <ABMsg prelude="Plot turnover over the last year."><VizLine /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="v-donut" label="Donut · composition" width={480} height={400}>
+          <ABMsg prelude="Where do we stand vs. market?"><VizDonut /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="v-tbl" label="Table · ranked list" width={560} height={520}>
+          <ABMsg prelude="Who are the top performers in Eng for Q3?"><VizTable /></ABMsg>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="sources" title="CHRIS- Sources" subtitle="Where the answer came from — inline citations or grouped at the end.">
+        <DCArtboard id="src-row" label="Sources row" width={580} height={340}>
+          <ABMsg prelude="How much PTO does Maria have?">
+            <div style={{ fontSize: 14, color: 'var(--gray-9)' }}>Maria has <b>12.5 days</b> of PTO remaining. Her next accrual of 1.67 days posts Dec 1.</div>
+            <SourcesRow />
+          </ABMsg>
+        </DCArtboard>
+        <DCArtboard id="src-inline" label="Inline citations" width={520} height={260}>
+          <ABMsg prelude="How much PTO does Maria have?">
+            <SourcesInline />
+          </ABMsg>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="loading" title="Loading states" subtitle="Feedback while the AI is working — from generic to specific.">
+        <DCArtboard id="l-typing" label="Typing · dots" width={420} height={200}>
+          <ABMsg><LoadTyping /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="l-shimmer" label="Shimmer · text placeholder" width={520} height={260}>
+          <ABMsg><LoadShimmer /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="l-status" label="Status · 'searching…'" width={520} height={200}>
+          <ABMsg><LoadStatus /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="l-skel" label="Skeleton · object cards" width={520} height={340}>
+          <ABMsg><LoadSkeletonCards /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="l-prog" label="Progress · long task" width={520} height={240}>
+          <ABMsg><LoadProgress /></ABMsg>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="filter" title="JOHN- Filtering in a conversation" subtitle="Scoping the AI's context, or refining what it returned. Context: Filtering in a conversation could dictate the conversation, think of these like initiators">
+        <DCArtboard id="f-scope" label="Composer scope pills" width={580} height={320}>
+          <AB align="center">
+            <FilterScope />
+          </AB>
+        </DCArtboard>
+        <DCArtboard id="f-refine" label="Inline result refinement" width={560} height={520}>
+          <ABMsg prelude="Which engineers have a Senior+ title?"><FilterRefine /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="f-dropdown" label="Dropdown as first question" width={560} height={620}>
+          <AB align="top" pad={24}><FilterDropdownFirst /></AB>
+        </DCArtboard>
+        <DCArtboard id="f-facets" label="Facets on a result message" width={640} height={620}>
+          <AB align="top" pad={24}><FilterFacetsOnResult /></AB>
+        </DCArtboard>
+        <DCArtboard id="f-segmented" label="Segmented control on an answer" width={600} height={460}>
+          <AB align="top" pad={24}><FilterSegmentedAnswer /></AB>
+        </DCArtboard>
+        <DCArtboard id="f-slotfill" label="Conversational slot-filling" width={560} height={700}>
+          <AB align="top" pad={24}><FilterSlotFill /></AB>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="context" title="SARAH- Context pills" subtitle="Records and files attached to a prompt — in the composer and on past messages.">
+        <DCArtboard id="ctx-compose" label="In the composer" width={600} height={320}>
+          <AB align="center">
+            <ContextComposer />
+          </AB>
+        </DCArtboard>
+        <DCArtboard id="ctx-picker" label="Add context · picker open" width={600} height={520}>
+          <AB align="top" pad={20}>
+            <ContextComposer pickerOpen={true} />
+          </AB>
+        </DCArtboard>
+        <DCArtboard id="ctx-readonly" label="Read-only · no X on pills" width={600} height={320}>
+          <AB align="center">
+            <ContextComposerReadOnly />
+          </AB>
+        </DCArtboard>
+        <DCArtboard id="ctx-msg" label="On a past user message" width={520} height={220}>
+          <AB align="center">
+            <div className="msg msg-user">
+              <div className="msg-body" style={{ background: 'var(--gray-1)' }}>
+                <ContextOnMessage />
+              </div>
+            </div>
+          </AB>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="inline" title="Inline comment / request" subtitle="Anchor a question or request to a specific element in the AI's output.">
+        <DCArtboard id="inl-pin" label="Pin · popover composer" width={560} height={400}>
+          <AB align="top" pad={28}><InlineComposerPin /></AB>
+        </DCArtboard>
+        <DCArtboard id="inl-sel" label="Text selection · action bar" width={560} height={280}>
+          <AB align="top" pad={28}><InlineSelectionMenu /></AB>
+        </DCArtboard>
+        <DCArtboard id="inl-hover" label="Row hover · inline actions" width={560} height={420}>
+          <AB align="top" pad={28}><InlineElementHover /></AB>
+        </DCArtboard>
+        <DCArtboard id="inl-form" label="Form field · Ask AI / Fill with AI" width={620} height={640}>
+          <AB align="top" pad={28}><InlineFormFieldAI /></AB>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="shifts" title="Shift scheduling" subtitle="Using AI chat to edit, add, and publish shifts — with realistic schedule artifacts in the conversation.">
+        <DCArtboard id="sh-edit" label="Edit a shift" width={600} height={560}>
+          <ABMsg prelude="Move Maria's Tuesday shift to 10–6."><ShiftEdit /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="sh-fill" label="Fill open shifts · suggest candidates" width={600} height={620}>
+          <ABMsg prelude="Help me cover next week's open shifts."><ShiftFillOpen /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="sh-week" label="Draft a whole week" width={820} height={640}>
+          <ABMsg prelude="Build next week's schedule based on last week's pattern."><ShiftWeekDraft /></ABMsg>
+        </DCArtboard>
+        <DCArtboard id="sh-publish" label="Review & publish" width={600} height={700}>
+          <ABMsg prelude="Publish the schedule and let everyone know."><ShiftPublish /></ABMsg>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="upload" title="KYLE- File / image upload" subtitle="Attaching and previewing files in the composer. Not live — visual pattern only.">
+        <DCArtboard id="up-composer" label="Attached files in composer" width={600} height={320}>
+          <AB align="center">
+            <FileUploadComposer />
+          </AB>
+        </DCArtboard>
+        <DCArtboard id="up-submitted" label="Submitted · message + AI ack" width={640} height={480}>
+          <AB align="top" pad={24}>
+            <FileUploadSubmitted />
+          </AB>
+        </DCArtboard>
+        <DCArtboard id="up-drop" label="Dropzone · empty state" width={480} height={260}>
+          <AB align="center">
+            <FileUploadDropzone />
+          </AB>
+        </DCArtboard>
+      </DCSection>
+
+    </DesignCanvas>);
+
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

@@ -1,6 +1,8 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { Headline, BodyText, Avatar, Button, InlineMessage, IconV2, IconButton, StyledBox, ActionTile } from '@bamboohr/fabric';
 import { AIChatPrompt } from './components/AIChatPrompt';
+import { WhileYouWereAwayCard } from './components/WhileYouWereAwayCard';
+import { RecognitionInsightCard } from './components/RecognitionInsightCard';
 import { TeamHealthCard } from './components/TeamHealthCard';
 import { WhoIsOutCard } from './components/WhoIsOutCard';
 import { QuickActionsCard } from './components/QuickActionsCard';
@@ -1216,8 +1218,8 @@ function processQuery(query: string): AIResponse {
 }
 
 export function HRManagerHome() {
-  const userName = 'Sarah';
-  const userPhoto = 'https://i.pravatar.cc/80?u=sarah';
+  const userName = 'Maya';
+  const userPhoto = 'https://i.pravatar.cc/80?u=maya';
 
   const [searchQuery, setSearchQuery] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -1707,6 +1709,26 @@ export function HRManagerHome() {
           </div>
         </div>
       </div>
+
+      {/* While You Were Away briefing - only visible in initial state */}
+      {isInitialState && (
+        <div className={`hr-home-wywa wywa-mount ${promptsFading ? 'hr-home-wywa--fading' : ''}`}>
+          <WhileYouWereAwayCard onResolveAction={(message) => setSlidedownMessage(message)} />
+        </div>
+      )}
+
+      {/* Recognition insight - only visible in initial state */}
+      {isInitialState && (
+        <div className={`hr-home-recognition wywa-mount ${promptsFading ? 'hr-home-recognition--fading' : ''}`}>
+          <RecognitionInsightCard
+            onSendComplete={(count) =>
+              setSlidedownMessage(
+                `Recognition sent to ${count} ${count === 1 ? 'person' : 'people'}`
+              )
+            }
+          />
+        </div>
+      )}
 
       {/* Initial prompts - Only visible in initial state */}
       {isInitialState && (

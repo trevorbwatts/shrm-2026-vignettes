@@ -1,0 +1,122 @@
+.oarv {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.oarv-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.oarv-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 20px;
+  background-color: var(--surface-neutral-white);
+  border: 1px solid var(--border-neutral-x-weak);
+  border-radius: 12px;
+  min-width: 0;
+}
+
+.oarv-stat-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.oarv-report {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.oarv-report-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.oarv-report-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.oarv-report-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.oarv-tip {
+  margin: 0;
+}
+
+.oarv-active-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.oarv-table-wrap {
+  overflow-x: auto;
+}
+
+.oarv-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.oarv-table thead th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-neutral-medium);
+  background-color: var(--surface-neutral-xx-weak);
+  border-bottom: 1px solid var(--border-neutral-x-weak);
+  white-space: nowrap;
+}
+
+.oarv-table tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-neutral-x-weak);
+  vertical-align: middle;
+}
+
+.oarv-table tbody tr:hover {
+  background-color: var(--surface-neutral-xx-weak);
+}
+
+.oarv-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.oarv-gap {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.oarv-gap-negative {
+  color: var(--text-error-strong);
+}
+
+.oarv-gap-positive {
+  color: var(--text-success-strong);
+}
+
+.oarv-gap-neutral {
+  color: var(--text-neutral-medium);
+}

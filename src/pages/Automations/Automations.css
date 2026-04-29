@@ -1,0 +1,97 @@
+.automations-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.automations-back {
+  margin-bottom: 4px;
+}
+
+.automations-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.automation-row {
+  display: grid;
+  grid-template-columns: 48px 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-neutral-x-weak);
+  transition: background-color 0.15s ease;
+}
+
+.automation-row:last-child {
+  border-bottom: none;
+}
+
+.automation-row:hover {
+  background-color: var(--surface-neutral-xx-weak);
+}
+
+.automation-row--paused {
+  opacity: 0.7;
+}
+
+.automation-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--surface-neutral-xx-weak);
+  border-radius: 8px;
+}
+
+.automation-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.automation-meta {
+  text-align: right;
+  min-width: 160px;
+}
+
+.automation-toggle {
+  display: flex;
+  align-items: center;
+}
+
+/* Slidedown */
+.automations-slidedown {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  pointer-events: none;
+  animation: automationsSlideDown 0.3s ease-out;
+}
+
+.automations-toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background-color: var(--surface-neutral-x-weak);
+  border: 1px solid var(--border-neutral-x-weak);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes automationsSlideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}

@@ -11,13 +11,14 @@
 
 /* ==================== INITIAL STATE ==================== */
 .hr-manager-home--initial {
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 32px;
 }
 
 .hr-manager-home--initial .hr-home-header,
 .hr-manager-home--initial .hr-home-initial-prompts,
 .hr-manager-home--initial .hr-home-search-section {
-  transform: translateY(-20px);
+  transform: translateY(0);
 }
 
 /* ==================== ACTIVE STATE ==================== */
@@ -56,6 +57,35 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+/* ==================== WHILE YOU WERE AWAY ==================== */
+.hr-home-wywa {
+  max-width: 672px;
+  width: 100%;
+  padding: 0 0 24px 0;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.hr-home-wywa--fading {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.hr-home-recognition {
+  max-width: 672px;
+  width: 100%;
+  padding: 0 0 24px 0;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.hr-home-recognition--fading {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 /* ==================== INITIAL PROMPTS ==================== */

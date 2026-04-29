@@ -1,0 +1,21 @@
+.pc-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pc-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pc-tabs {
+  margin-top: -8px;
+}
+
+.pc-stage-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

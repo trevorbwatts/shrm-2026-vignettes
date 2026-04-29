@@ -239,6 +239,126 @@
   margin-top: 12px;
 }
 
+/* ===== Employee result card (in chat) ===== */
+
+.ask-panel__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ask-panel__emp-card {
+  background: var(--surface-neutral-white, #ffffff);
+  border: 1px solid var(--border-neutral-x-weak, #ebe9e6);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.ask-panel-fullscreen .ask-panel__emp-card {
+  max-width: 480px;
+}
+
+.ask-panel__emp-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ask-panel__emp-card-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.ask-panel__emp-card-id {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ask-panel__emp-card-name {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--text-neutral-strong, #38312f);
+}
+
+.ask-panel__emp-card-role {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-neutral-medium, #8c7b76);
+}
+
+.ask-panel__emp-card-divider {
+  margin: 0 4px;
+  color: var(--border-neutral-medium, #d3cfc9);
+}
+
+.ask-panel__emp-card-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ask-panel__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.ask-panel__pill--out {
+  background: var(--surface-warning-weak, #fdebde);
+  color: var(--text-warning-strong, #b65814);
+}
+
+.ask-panel__pill--anniversary {
+  background: var(--surface-info-weak, #e0edfa);
+  color: var(--text-info-strong, #0b4fd1);
+}
+
+.ask-panel__pill--birthday {
+  background: var(--surface-info-weak, #e0edfa);
+  color: var(--text-info-strong, #0b4fd1);
+}
+
+.ask-panel__pill--new-hire {
+  background: var(--surface-success-weak, #e0f1d9);
+  color: var(--text-success-strong, #2e7918);
+}
+
+.ask-panel__emp-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ask-panel__emp-card-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-neutral-strong, #38312f);
+}
+
 /* ===== Collapsed footer input ===== */
 
 .ask-panel__footer {
@@ -393,3 +513,4 @@
   align-items: center;
   gap: 8px;
 }
+

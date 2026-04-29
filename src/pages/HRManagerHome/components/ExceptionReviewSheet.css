@@ -1,0 +1,116 @@
+/* Review mode */
+.ers-review {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 8px 0;
+}
+
+.ers-review-employee {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ers-review-employee-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ers-review-issue {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ers-review-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ers-review-timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ers-review-timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 12px;
+  background-color: var(--surface-neutral-xx-weak);
+  border-radius: 8px;
+}
+
+.ers-review-timeline-icon {
+  padding-top: 2px;
+}
+
+.ers-review-timeline-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+/* Compose mode */
+.ers-compose {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 8px 0;
+  width: 100%;
+}
+
+.ers-compose-recipient {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: var(--surface-neutral-xx-weak);
+  border-radius: 8px;
+}
+
+.ers-compose-recipient-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ers-compose-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ers-compose-label {
+  display: block;
+}
+
+.ers-compose-textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-neutral-strong);
+  background-color: var(--surface-neutral-white);
+  border: 1px solid var(--border-neutral-x-weak);
+  border-radius: 8px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ers-compose-textarea:hover {
+  border-color: var(--border-neutral-weak);
+}
+
+.ers-compose-textarea:focus {
+  border-color: var(--border-primary-medium);
+  box-shadow: 0 0 0 3px var(--surface-primary-x-weak);
+}

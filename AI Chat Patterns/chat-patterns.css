@@ -1,0 +1,183 @@
+/* Chat patterns shared styles — built on Fabric Encore tokens */
+
+body {
+  margin: 0;
+  background: #f0eee9;
+  font-family: var(--font-sans);
+  color: var(--gray-9);
+}
+
+/* ===== Chat message scaffold ===== */
+.chat {
+  background: #fff;
+  padding: 24px 28px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--gray-9);
+}
+
+.msg { display: flex; gap: 12px; align-items: flex-start; }
+.msg-user { justify-content: flex-start; }
+.msg-user .msg-body {
+  background: var(--gray-1);
+  padding: 10px 16px;
+  border-radius: 18px 18px 4px 18px;
+  max-width: 75%;
+  color: var(--gray-9);
+}
+.msg-ai .msg-body { flex: 1; min-width: 0; }
+
+.ai-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--primary-500);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 0 0 rgba(0,0,0,.06);
+}
+.ai-avatar svg { width: 14px; height: 14px; }
+
+/* Subtle meta line (ABOVE or after content) */
+.meta {
+  font-size: 12px;
+  color: var(--gray-6);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+
+/* Cards rendered inside AI messages */
+.ai-card {
+  background: #fff;
+  border: 1px solid var(--gray-2);
+  border-radius: 12px;
+  box-shadow: 1px 1px 0 1px rgba(0,0,0,.03);
+  overflow: hidden;
+}
+.ai-card + .ai-card { margin-top: 10px; }
+
+/* Buttons reused */
+.fbtn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: 1px solid transparent; border-radius: 1000px;
+  font-family: var(--font-sans); font-weight: 600;
+  cursor: pointer; font-size: 13px; height: 32px; padding: 0 14px;
+  box-shadow: 0 1px 0 0 rgba(0,0,0,.05);
+  transition: background-color .15s, border-color .15s, color .15s;
+}
+.fbtn-primary { background: var(--primary-500); color: #fff; }
+.fbtn-primary:hover { background: var(--primary-900); }
+.fbtn-secondary {
+  background: #fff; color: var(--primary-500);
+  border-color: var(--primary-500);
+}
+.fbtn-secondary:hover { background: var(--primary-100); }
+.fbtn-outlined {
+  background: #fff; color: var(--gray-8);
+  border-color: var(--gray-4);
+}
+.fbtn-outlined:hover { border-color: var(--gray-7); }
+.fbtn-text {
+  background: transparent; color: var(--link); border: 0;
+  box-shadow: none; padding: 0 6px; font-weight: 500;
+}
+.fbtn-text:hover { color: var(--primary-500); text-decoration: underline; }
+.fbtn-ai {
+  background: #fff; color: var(--accent-warm-purple); border: 1px solid transparent;
+  background-image:
+    linear-gradient(#fff, #fff),
+    linear-gradient(90deg, var(--accent-lilac), var(--accent-cerulean));
+  background-origin: border-box; background-clip: padding-box, border-box;
+}
+.fbtn-sm { height: 28px; padding: 0 11px; font-size: 12px; }
+.fbtn[disabled] { opacity: .5; cursor: not-allowed; }
+
+/* Pills */
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  background: var(--gray-1); color: var(--gray-8);
+}
+.pill-success { background: var(--success-light); color: var(--success-dark); }
+.pill-info    { background: var(--info-light); color: var(--info-dark); }
+.pill-warning { background: var(--warning-light); color: var(--warning-dark); }
+.pill-error   { background: var(--error-light); color: var(--error-dark); }
+.pill-primary { background: var(--primary-100); color: var(--primary-900); }
+.pill-discovery { background: var(--discovery-light); color: var(--discovery-dark); }
+
+/* icon stroke helper */
+.i {
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ===== Reused layout helpers inside cards ===== */
+.row { display: flex; align-items: center; gap: 10px; }
+.stack { display: flex; flex-direction: column; }
+.gap-4 { gap: 4px; } .gap-6 { gap: 6px; } .gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; } .gap-16 { gap: 16px; } .gap-20 { gap: 20px; }
+.muted { color: var(--gray-6); }
+.sub { color: var(--gray-7); font-size: 13px; line-height: 1.45; }
+.teenie { font-size: 12px; line-height: 1.4; }
+.mono { font-family: var(--font-mono); }
+
+/* Divider */
+.divider { height: 1px; background: var(--gray-2); }
+
+/* Accent "AI" text gradient */
+.ai-text {
+  background: linear-gradient(90deg, var(--accent-warm-purple), var(--accent-cerulean));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+
+/* Shimmer */
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.skel {
+  background: linear-gradient(90deg, var(--gray-1) 25%, var(--gray-2) 50%, var(--gray-1) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 6px;
+}
+
+/* Dot typing */
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: .4; }
+  40% { transform: translateY(-4px); opacity: 1; }
+}
+.dots { display: inline-flex; gap: 4px; align-items: center; }
+.dots i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gray-6);
+  animation: bounce 1.3s infinite;
+}
+.dots i:nth-child(2) { animation-delay: .15s; }
+.dots i:nth-child(3) { animation-delay: .3s; }
+
+/* Spin */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--gray-2); border-top-color: var(--primary-500); animation: spin .8s linear infinite; }
+.spinner.lg { width: 24px; height: 24px; border-width: 2.5px; }
+
+/* Collapsible block */
+details.cot { border-radius: 8px; }
+details.cot > summary { list-style: none; cursor: pointer; }
+details.cot > summary::-webkit-details-marker { display: none; }
+.cot-chevron { transition: transform .18s; }
+details.cot[open] .cot-chevron { transform: rotate(90deg); }
+
+/* Links inline */
+.clickable { cursor: pointer; }
+.clickable:hover { background: var(--gray-1); }
+
+/* artboard sizing */
+.ab { padding: 20px; overflow: auto; height: 100%; box-sizing: border-box; }
+.ab-chat { padding: 0; }
+
+/* focus ring reset for buttons */
+button:focus-visible { outline: 2px solid var(--primary-500); outline-offset: 2px; }
+button { font-family: inherit; }

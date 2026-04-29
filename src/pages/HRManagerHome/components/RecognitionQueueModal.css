@@ -1,0 +1,118 @@
+.rqm-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 8px 0;
+  width: 100%;
+}
+
+.rqm-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 28px;
+}
+
+.rqm-back-slot {
+  display: flex;
+  align-items: center;
+}
+
+.rqm-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rqm-progress-bar {
+  width: 100%;
+  height: 4px;
+  background-color: var(--surface-neutral-x-weak);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.rqm-progress-fill {
+  height: 100%;
+  background-color: var(--surface-discovery-strong, #6f4ea0);
+  transition: width 0.3s ease;
+}
+
+.rqm-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background-color: var(--surface-neutral-white);
+  border: 1px solid var(--border-neutral-x-weak);
+  border-radius: 12px;
+}
+
+.rqm-card-identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rqm-card-identity-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.rqm-card-context {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background-color: var(--surface-neutral-xx-weak);
+  border-radius: 8px;
+}
+
+.rqm-card-message {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rqm-card-label {
+  display: block;
+}
+
+.rqm-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-neutral-strong);
+  background-color: var(--surface-neutral-white);
+  border: 1px solid var(--border-neutral-x-weak);
+  border-radius: 8px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rqm-textarea:hover {
+  border-color: var(--border-neutral-weak);
+}
+
+.rqm-textarea:focus {
+  border-color: var(--border-primary-medium);
+  box-shadow: 0 0 0 3px var(--surface-primary-x-weak);
+}
+
+.rqm-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 32px 24px 16px;
+  width: 100%;
+}

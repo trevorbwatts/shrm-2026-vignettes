@@ -1,5 +1,7 @@
 import { useState, Suspense, lazy } from 'react';
 import { AskPanel } from './components/AskPanel/AskPanel';
+import { GlobalHiringAssistant } from './components/GlobalHiringAssistant';
+import { ReportPanel } from './components/ReportPanel/ReportPanel';
 import { Routes, Route, Link, Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import {
   BodyText,
@@ -15,6 +17,7 @@ import {
   DatePickerProvider,
 } from '@bamboohr/fabric';
 import { ViewBarProvider, useViewBar } from './contexts/ViewBarContext';
+import { ReportProvider } from './contexts/ReportContext';
 import { ViewBar } from './components/ViewBar';
 import './App.css';
 
@@ -39,22 +42,18 @@ const Compensation = lazy(() => import('./pages/Compensation/Compensation'));
 const Chat = lazy(() => import('./pages/Chat/Chat'));
 const CreateJobOpening = lazy(() => import('./pages/CreateJobOpening/CreateJobOpening'));
 const HeadcountReport = lazy(() => import('./pages/HeadcountReport/HeadcountReport'));
-const HomeTemplate = lazy(() => import('./pages/HomeTemplate/Home'));
 const HRManagerHome = lazy(() => import('./pages/HRManagerHome/HRManagerHome'));
 const JobOpeningDetail = lazy(() => import('./pages/JobOpeningDetail/JobOpeningDetail'));
 const NewEmployeePage = lazy(() => import('./pages/NewEmployeePage/NewEmployeePage'));
+const Automations = lazy(() => import('./pages/Automations'));
+const OfferAcceptanceReport = lazy(() => import('./pages/OfferAcceptanceReport'));
+const PerformanceCycle = lazy(() => import('./pages/PerformanceCycle'));
 
 // Prototype Index Page
 function PrototypeIndex() {
   const prototypes = [
     {
-      name: 'Home Template',
-      path: '/home',
-      description: 'Dashboard with Gridlets, stats cards, and activity feed',
-      status: 'ready'
-    },
-    {
-      name: 'HR Manager Home',
+      name: 'Home',
       path: '/hr-home',
       description: 'HR manager dashboard with insights and quick actions',
       status: 'ready'
@@ -117,6 +116,12 @@ function PrototypeIndex() {
       name: 'Payroll',
       path: '/payroll',
       description: 'Payroll dashboard with stats cards and reminders',
+      status: 'ready'
+    },
+    {
+      name: 'Performance Cycle',
+      path: '/performance-cycle',
+      description: 'Q2 review cycle — setup, calibration flags, comp recommendations, post-cycle dashboard',
       status: 'ready'
     },
     {
@@ -226,6 +231,11 @@ function FullLayout({ children, noCapsule }: { children: React.ReactNode; noCaps
   const isHiringActive = p === '/hiring' || p.startsWith('/hiring/') || p === '/candidates' || p === '/talent-pools';
   const isReportsActive = p === '/reports' || p.startsWith('/reports/');
 
+  // Use the specialized Global Hiring Assistant on the global-employment settings
+  // and create-job-opening flows; everything else uses the generic Ask BambooHR panel.
+  const useGlobalHiringAssistant =
+    p === '/settings/global-employment' || p.startsWith('/hiring/create-job');
+
   return (
     <div className="app-layout">
       <GlobalNavigation
@@ -237,7 +247,7 @@ function FullLayout({ children, noCapsule }: { children: React.ReactNode; noCaps
           </GlobalNavigation.FooterItem>,
         ]}
         links={[
-          <GlobalNavigation.Link key="home" active={p === '/home' || p === '/hr-home'} icon="house-regular" activeIcon="house-solid" label="Home" component={RouterLink} to="/home" />,
+          <GlobalNavigation.Link key="home" active={p === '/hr-home'} icon="house-regular" activeIcon="house-solid" label="Home" component={RouterLink} to="/hr-home" />,
           <GlobalNavigation.Link key="my-info" active={p === '/my-info'} icon="circle-user-regular" activeIcon="circle-user-solid" label="My Info" component={RouterLink} to="/my-info" />,
           <GlobalNavigation.Link key="people" active={isPeopleActive} icon="user-group-regular" activeIcon="user-group-solid" label="People" component={RouterLink} to="/people" />,
           <GlobalNavigation.Link key="hiring" active={isHiringActive} icon="id-badge-regular" activeIcon="id-badge-solid" label="Hiring" component={RouterLink} to="/hiring" />,
@@ -281,19 +291,29 @@ function FullLayout({ children, noCapsule }: { children: React.ReactNode; noCaps
           />
         </div>
         <div className="app-content-area">
-          {noCapsule ? (
-            <div className="app-direct-content">{children}</div>
-          ) : (
-            <PageCapsule>{children}</PageCapsule>
-          )}
+          <div className="app-content-stage">
+            {noCapsule ? (
+              <div className="app-direct-content">{children}</div>
+            ) : (
+              <PageCapsule>{children}</PageCapsule>
+            )}
+            <ReportPanel />
+          </div>
           {isAskOpen && (
             <div className="ask-panel-wrapper">
-              <AskPanel
-                isOpen={isAskOpen}
-                onClose={() => { setIsAskOpen(false); setIsAskExpanded(false); }}
-                isExpanded={isAskExpanded}
-                onExpandChange={setIsAskExpanded}
-              />
+              {useGlobalHiringAssistant ? (
+                <GlobalHiringAssistant
+                  isOpen={isAskOpen}
+                  onClose={() => { setIsAskOpen(false); setIsAskExpanded(false); }}
+                />
+              ) : (
+                <AskPanel
+                  isOpen={isAskOpen}
+                  onClose={() => { setIsAskOpen(false); setIsAskExpanded(false); }}
+                  isExpanded={isAskExpanded}
+                  onExpandChange={setIsAskExpanded}
+                />
+              )}
             </div>
           )}
         </div>
@@ -320,11 +340,12 @@ function AppShell({ children }: { children: React.ReactNode }) {
 function App() {
   return (
     <ViewBarProvider>
+    <ReportProvider>
     <DatePickerProvider>
     <Suspense fallback={<PageLoader />}>
       <AppShell>
       <Routes>
-        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/" element={<Navigate to="/hr-home" replace />} />
         <Route path="/index" element={<FullLayout><PrototypeIndex /></FullLayout>} />
         <Route path="/navigation-option-a" element={<FullLayout><NavigationOptionA /></FullLayout>} />
         {/* Files routes - each category has its own route */}
@@ -377,8 +398,10 @@ function App() {
         <Route path="/settings/time-tracking" element={<FullLayout><Settings section="time-tracking" /></FullLayout>} />
         <Route path="/settings/training" element={<FullLayout><Settings section="training" /></FullLayout>} />
         {/* Additional pages */}
-        <Route path="/home" element={<FullLayout><HomeTemplate /></FullLayout>} />
         <Route path="/hr-home" element={<FullLayout><HRManagerHome /></FullLayout>} />
+        <Route path="/automations" element={<FullLayout><Automations /></FullLayout>} />
+        <Route path="/reports/offer-acceptance" element={<FullLayout><OfferAcceptanceReport /></FullLayout>} />
+        <Route path="/performance-cycle" element={<FullLayout><PerformanceCycle /></FullLayout>} />
         <Route path="/chat" element={<FullLayout><Chat /></FullLayout>} />
         <Route path="/hiring/create-job" element={<FullLayout><CreateJobOpening /></FullLayout>} />
         <Route path="/hiring/job/:id" element={<FullLayout><JobOpeningDetail /></FullLayout>} />
@@ -390,6 +413,7 @@ function App() {
       </AppShell>
     </Suspense>
     </DatePickerProvider>
+    </ReportProvider>
     </ViewBarProvider>
   );
 }
