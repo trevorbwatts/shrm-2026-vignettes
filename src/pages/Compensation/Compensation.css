@@ -1,0 +1,59 @@
+.compensation-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.compensation-tabs {
+  margin-bottom: 24px;
+}
+
+.compensation-section-title {
+  margin-bottom: 16px;
+  color: var(--color-primary-strong);
+}
+
+.compensation-section-title h2 {
+  color: var(--color-primary-strong) !important;
+}
+
+.compensation-tab-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.compensation-blank-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px 64px;
+  gap: 8px;
+}
+
+.compensation-blank-illustration {
+  width: 128px;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+.compensation-blank-headline {
+  margin-bottom: 4px;
+}
+
+.compensation-blank-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.compensation-btn-primary {
+  color: var(--color-primary-strong) !important;
+  border-color: var(--color-primary-strong) !important;
+}
+.compensation-btn-primary svg,
+.compensation-btn-primary path {
+  color: var(--color-primary-strong) !important;
+  fill: var(--color-primary-strong) !important;
+}

@@ -1,0 +1,124 @@
+.reports-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.reports-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Force primary green outlined style — mirrors .header-ask-btn */
+.reports-new-report-btn,
+.reports-new-report-btn:hover {
+  color: var(--color-primary-strong) !important;
+  border-color: var(--color-primary-strong) !important;
+}
+.reports-new-report-btn svg,
+.reports-new-report-btn [data-icon],
+.reports-new-report-btn path {
+  color: var(--color-primary-strong) !important;
+  fill: var(--color-primary-strong) !important;
+}
+
+/* Layout */
+.reports-layout {
+  display: flex;
+  flex: 1;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Main Content */
+.reports-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Favorites — unsectioned, sits on page background */
+.reports-favorites-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reports-favorites-grid {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+/* TileV2 favorite card wrapper — 25% of container width, equal height */
+.reports-favorite-tile-wrapper {
+  flex: 0 0 25%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.reports-favorite-remove {
+  display: none;
+}
+
+.reports-favorite-tile-wrapper:hover .reports-favorite-remove {
+  display: flex;
+}
+
+/* Nav badge (e.g. Custom Reports "6") */
+.reports-nav-item-with-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 4px;
+}
+
+.reports-nav-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fabric-theme-color-text-neutral-inverted, #ffffff);
+  background: var(--color-primary-strong);
+  border-radius: 99px;
+}
+
+/* 20px gap between Section.Header and table — matches MyInfo spacing */
+.reports-section-content {
+  margin-top: 20px;
+}
+
+/* Table name cells — used inside Fabric Table */
+.reports-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Custom Reports tabs */
+.reports-custom-tabs {
+  margin-top: 8px;
+}
+
+.reports-blank-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 64px 24px;
+  text-align: center;
+}
+
+.reports-blank-state-icon {
+  opacity: 0.5;
+}

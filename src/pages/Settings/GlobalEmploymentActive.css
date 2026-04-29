@@ -1,0 +1,90 @@
+.ge-active-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 32px 32px;
+}
+
+.ge-active-subheader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+}
+
+.ge-active-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Table */
+.ge-active-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.ge-active-table thead tr {
+  background-color: var(--fabric-color-surface-neutral-x-weak, #f5f4f1);
+  border-radius: 8px;
+}
+
+.ge-active-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fabric-color-text-neutral-strong, #48413f);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ge-active-table thead th:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.ge-active-table thead th:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.ge-th-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ge-active-table tbody tr {
+  border-bottom: 1px solid var(--fabric-color-border-neutral-xx-weak, #f5f4f1);
+}
+
+.ge-active-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.ge-active-table tbody td {
+  padding: 16px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ge-active-table tbody td:nth-child(1) { width: 25%; }
+.ge-active-table tbody td:nth-child(2) { width: 28%; }
+.ge-active-table tbody td:nth-child(3) { width: 22%; }
+.ge-active-table tbody td:nth-child(4) { width: 25%; }
+
+.ge-location-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ge-flag {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+}

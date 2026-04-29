@@ -1,0 +1,73 @@
+import { createContext, useContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
+
+type Persona = 'employee' | 'manager' | 'hr-admin';
+type Package = 'core' | 'pro' | 'elite';
+interface ViewBarContextType {
+  isVisible: boolean;
+  toggleVisible: () => void;
+  activePersona: Persona;
+  setActivePersona: (persona: Persona) => void;
+  activePackage: Package;
+  setActivePackage: (pkg: Package) => void;
+  activeEdgeCase: string | null;
+  toggleEdgeCase: (id: string) => void;
+  activeErrorState: string | null;
+  toggleErrorState: (id: string) => void;
+  activeAddOns: string[];
+  toggleAddOn: (id: string) => void;
+}
+
+const ViewBarContext = createContext<ViewBarContextType | undefined>(undefined);
+
+export function ViewBarProvider({ children }: { children: ReactNode }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const [activePersona, setActivePersona] = useState<Persona>('employee');
+  const [activePackage, setActivePackage] = useState<Package>('core');
+  const [activeEdgeCase, setActiveEdgeCase] = useState<string | null>(null);
+  const [activeErrorState, setActiveErrorState] = useState<string | null>(null);
+  const [activeAddOns, setActiveAddOns] = useState<string[]>([]);
+
+  const toggleEdgeCase = (id: string) =>
+    setActiveEdgeCase(prev => prev === id ? null : id);
+
+  const toggleErrorState = (id: string) =>
+    setActiveErrorState(prev => prev === id ? null : id);
+
+  const toggleAddOn = (id: string) =>
+    setActiveAddOns(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]);
+
+  const toggleVisible = () => setIsVisible(prev => !prev);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === '\\') {
+        e.preventDefault();
+        toggleVisible();
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  return (
+    <ViewBarContext.Provider value={{
+      isVisible, toggleVisible,
+      activePersona, setActivePersona,
+      activePackage, setActivePackage,
+      activeEdgeCase, toggleEdgeCase,
+      activeErrorState, toggleErrorState,
+      activeAddOns, toggleAddOn,
+    }}>
+      {children}
+    </ViewBarContext.Provider>
+  );
+}
+
+export function useViewBar() {
+  const context = useContext(ViewBarContext);
+  if (context === undefined) {
+    throw new Error('useViewBar must be used within a ViewBarProvider');
+  }
+  return context;
+}

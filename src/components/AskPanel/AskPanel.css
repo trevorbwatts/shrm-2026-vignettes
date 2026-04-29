@@ -1,0 +1,395 @@
+/* ===== Animations ===== */
+
+@keyframes ask-panel-in {
+  from { transform: translateX(110%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes ask-typing-bounce {
+  0%, 100% { transform: scale(0.65); opacity: 0.4; }
+  50%       { transform: scale(1.2);  opacity: 1; }
+}
+
+/* ===== Outer panel shell ===== */
+
+.ask-panel {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background: var(--surface-neutral-white, #ffffff);
+  border-radius: 20px;
+  border: 1px solid var(--border-neutral-x-weak, #ebe9e6);
+  overflow: hidden;
+  animation: ask-panel-in 280ms cubic-bezier(0.25, 0.8, 0.25, 1) both;
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+}
+
+/* ===== Main content column ===== */
+
+.ask-panel__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ===== Panel header ===== */
+
+.ask-panel__header {
+  position: relative;
+  flex-shrink: 0;
+  height: 62px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-neutral-xx-weak, #f5f5f3);
+  border-radius: 16px 16px 0 0;
+}
+
+.ask-panel__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ===== Messages wrapper (scroll + gradient) ===== */
+
+.ask-panel__messages-wrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.ask-panel__content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Scroll fade gradient ===== */
+
+.ask-panel__scroll-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ask-panel__scroll-gradient--fs {
+  background: linear-gradient(to bottom, rgba(245, 245, 243, 0) 0%, rgba(245, 245, 243, 1) 100%);
+}
+
+/* ===== Message list ===== */
+
+.ask-panel__messages {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* ===== Date separator ===== */
+
+.ask-panel__date-sep {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.ask-panel__date-sep-text {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 12px;
+  color: var(--text-neutral-medium, #8c7b76);
+}
+
+/* ===== User message ===== */
+
+.ask-panel__msg-user {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-left: 34px;
+}
+
+.ask-panel__msg-user-bubble {
+  background: var(--surface-neutral-xx-weak, #f5f5f3);
+  padding: 12px 16px;
+  border-radius: 16px 16px 4px 16px;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--text-neutral-strong, #38312f);
+}
+
+.ask-panel-fullscreen .ask-panel__msg-user-bubble {
+  background: var(--surface-neutral-white, #ffffff);
+}
+
+.ask-panel__msg-time {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 11px;
+  color: var(--text-neutral-medium, #8c7b76);
+  margin-top: 4px;
+  padding-right: 4px;
+}
+
+/* ===== AI message ===== */
+
+.ask-panel__msg-ai {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ask-panel__ai-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ask-panel__ai-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: var(--color-primary-strong, #2e7918);
+  background-image: url('/assets/images/bamboo-icon.svg');
+  background-size: 20px 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ask-panel__ai-icon--lg {
+  width: 28px;
+  height: 28px;
+  background-size: 20px 20px;
+}
+
+.ask-panel__ai-body {
+  padding-left: 32px;
+}
+
+/* ===== AI message feedback (thumbs) ===== */
+
+.ask-panel__msg-feedback {
+  display: flex;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.ask-panel__feedback-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s;
+  line-height: 0;
+}
+
+.ask-panel__feedback-btn:hover {
+  background-color: var(--surface-neutral-xx-weak, #f5f5f3);
+}
+
+/* ===== Typing indicator ===== */
+
+.ask-panel__typing {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--surface-neutral-xx-weak, #f5f5f3);
+  border-radius: 16px 16px 16px 4px;
+}
+
+.ask-panel__typing span {
+  display: block;
+  width: 7px;
+  height: 7px;
+  background: var(--text-neutral-medium, #8c7b76);
+  border-radius: 50%;
+  animation: ask-typing-bounce 1.3s ease-in-out infinite;
+}
+
+.ask-panel__typing span:nth-child(1) { animation-delay: 0s; }
+.ask-panel__typing span:nth-child(2) { animation-delay: 0.18s; }
+.ask-panel__typing span:nth-child(3) { animation-delay: 0.36s; }
+
+/* ===== Suggestion chips ===== */
+
+.ask-panel__msg-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* ===== Collapsed footer input ===== */
+
+.ask-panel__footer {
+  flex-shrink: 0;
+  padding: 12px;
+  background: var(--surface-neutral-xx-weak, #f5f5f3);
+  border-radius: 0 0 16px 16px;
+}
+
+.ask-panel__footer-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ask-panel__footer-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.ask-panel__footer-field label {
+  display: none;
+}
+
+.ask-panel__send-btn-bare {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: opacity 0.15s;
+}
+
+.ask-panel__send-btn-bare:hover:not(:disabled) {
+  opacity: 0.75;
+}
+
+.ask-panel__send-btn-bare:disabled {
+  cursor: not-allowed;
+}
+
+/* ===== Intro / blank state ===== */
+
+.ask-panel__intro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+}
+
+.ask-panel__intro-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ask-panel__intro-greeting * {
+  color: var(--color-primary-strong, #2e7918) !important;
+  font-family: 'Fields', system-ui, sans-serif !important;
+}
+
+.ask-panel__intro-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* ===== Full-screen expanded overlay ===== */
+
+@keyframes ask-panel-fullscreen-in {
+  from { opacity: 0; transform: scale(0.98); transform-origin: right center; }
+  to   { opacity: 1; transform: scale(1);    transform-origin: right center; }
+}
+
+.ask-panel-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-neutral-xx-weak, #f5f5f3);
+  animation: ask-panel-fullscreen-in 280ms cubic-bezier(0.25, 0.8, 0.25, 1) both;
+}
+
+.ask-panel-fullscreen__header {
+  flex-shrink: 0;
+  height: 64px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-neutral-white, #ffffff);
+  border-bottom: 1px solid var(--border-neutral-x-weak, #ebe9e6);
+}
+
+.ask-panel-fullscreen__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ===== Fullscreen messages wrapper (scroll + gradient) ===== */
+
+.ask-panel-fullscreen__messages-wrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.ask-panel-fullscreen__content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.ask-panel-fullscreen__inner {
+  flex: 1;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ask-panel-fullscreen__inner .ask-panel__messages {
+  padding: 32px 0;
+  gap: 24px;
+}
+
+.ask-panel-fullscreen__footer {
+  flex-shrink: 0;
+  padding: 16px 24px;
+  background: var(--surface-neutral-xx-weak, #f5f5f3);
+  border-top: 1px solid var(--border-neutral-x-weak, #ebe9e6);
+}
+
+.ask-panel-fullscreen__input-row {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

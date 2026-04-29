@@ -1,0 +1,97 @@
+/*
+ * EmployeeCard Component Styles
+ * Card layout for employee directory entries
+ */
+
+.employee-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 24px;
+}
+
+.employee-card-avatar {
+  flex-shrink: 0;
+}
+
+.employee-card-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1.5fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Left column - basic info */
+.employee-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.employee-card-name {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--fabric-theme-color-primary-strong, #2e7918);
+}
+
+.employee-card-icon-link {
+  margin-top: 8px;
+}
+
+/* Middle column - contact */
+.employee-card-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+/* Right column - reporting */
+.employee-card-reporting {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.employee-card-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
+@media (max-width: 960px) {
+  .employee-card-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .employee-card-reporting {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .employee-card-content {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .employee-card {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .employee-card-avatar {
+    align-self: center;
+  }
+}
