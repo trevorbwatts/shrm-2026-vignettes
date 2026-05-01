@@ -36,7 +36,7 @@ export function ExceptionReviewSheet({
   onClose,
   onResolve,
 }: ExceptionReviewSheetProps) {
-  const { employee, issue, issueDescription, daysOverdue, aiInsight, timeline } = exception;
+  const { employee, issue, issueDescription, daysOverdue, timeline } = exception;
   const firstName = employee.name.split(' ')[0];
 
   const [isComposeOpen, setIsComposeOpen] = useState(false);
@@ -139,12 +139,6 @@ export function ExceptionReviewSheet({
                   {issueDescription}
                 </BodyText>
               </div>
-
-              <InlineMessage
-                status="ai"
-                title="Here's what I noticed"
-                description={aiInsight}
-              />
 
               <div className="ers-review-timeline">
                 <BodyText size="small" weight="semibold" color="neutral-strong">

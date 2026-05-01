@@ -105,7 +105,7 @@ export function SimilarEmployeesSheet({ flag, isOpen, onClose, onResolve }: Simi
   return (
     <StandardModal isOpen={isOpen} onRequestClose={onClose}>
       <StandardModal.Body
-        size="full"
+        size="medium"
         renderHeader={
           <StandardModal.Header title={`${a.firstName} ${a.lastName} vs. ${b.firstName} ${b.lastName}`} />
         }

@@ -38,7 +38,7 @@ export default function PerformanceCycle() {
         <Tabs
           value={activeStage}
           onChange={(value: unknown, _event: ChangeEvent<Element>) => setActiveStage(value as Stage)}
-          mode="fill"
+          mode="line"
         >
           <Tab value="setup" label="Setup" />
           <Tab value="in-progress" label="In Progress" />

@@ -2,8 +2,8 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { Headline, BodyText, Avatar, Button, InlineMessage, IconV2, IconButton, StyledBox, ActionTile } from '@bamboohr/fabric';
 import { AIChatPrompt } from './components/AIChatPrompt';
 import { WhileYouWereAwayCard } from './components/WhileYouWereAwayCard';
+import { WorthYourAttentionCard } from './components/WorthYourAttentionCard';
 import { OnYourPlateCard } from './components/OnYourPlateCard';
-import { RecognitionInsightCard } from './components/RecognitionInsightCard';
 import { TeamHealthCard } from './components/TeamHealthCard';
 import { WhoIsOutCard } from './components/WhoIsOutCard';
 import { QuickActionsCard } from './components/QuickActionsCard';
@@ -1704,17 +1704,21 @@ export function HRManagerHome() {
             <Headline size="large">
               {getGreeting()}, {userName}!
             </Headline>
-            <BodyText color="neutral-weak">
-              Get instant help with HR questions, policies, compliance,<br />and people management.
-            </BodyText>
           </div>
         </div>
       </div>
 
-      {/* While You Were Away briefing - only visible in initial state */}
+      {/* While You Were Away + Worth Your Attention - same row, only in initial state */}
       {isInitialState && (
-        <div className={`hr-home-wywa wywa-mount ${promptsFading ? 'hr-home-wywa--fading' : ''}`}>
-          <WhileYouWereAwayCard onResolveAction={(message) => setSlidedownMessage(message)} />
+        <div className={`hr-home-attention-row ${promptsFading ? 'hr-home-attention-row--fading' : ''}`}>
+          <div className="hr-home-attention-col wya-mount">
+            <WorthYourAttentionCard
+              onActionComplete={(message) => setSlidedownMessage(message)}
+            />
+          </div>
+          <div className="hr-home-attention-col wywa-mount">
+            <WhileYouWereAwayCard />
+          </div>
         </div>
       )}
 
@@ -1722,19 +1726,6 @@ export function HRManagerHome() {
       {isInitialState && (
         <div className={`hr-home-on-your-plate wywa-mount ${promptsFading ? 'hr-home-on-your-plate--fading' : ''}`}>
           <OnYourPlateCard />
-        </div>
-      )}
-
-      {/* Recognition insight - only visible in initial state */}
-      {isInitialState && (
-        <div className={`hr-home-recognition wywa-mount ${promptsFading ? 'hr-home-recognition--fading' : ''}`}>
-          <RecognitionInsightCard
-            onSendComplete={(count) =>
-              setSlidedownMessage(
-                `Recognition sent to ${count} ${count === 1 ? 'person' : 'people'}`
-              )
-            }
-          />
         </div>
       )}
 

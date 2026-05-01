@@ -59,37 +59,39 @@
   gap: 4px;
 }
 
-/* ==================== WHILE YOU WERE AWAY ==================== */
-.hr-home-wywa {
-  max-width: 672px;
+/* ==================== ATTENTION ROW (WYWA + WYA) ==================== */
+.hr-home-attention-row {
+  max-width: 1180px;
   width: 100%;
   padding: 0 0 24px 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  align-items: start;
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
-.hr-home-wywa--fading {
+.hr-home-attention-row--fading {
   opacity: 0;
   transform: translateY(-10px);
 }
 
-.hr-home-recognition {
-  max-width: 672px;
+.hr-home-attention-col {
   width: 100%;
-  padding: 0 0 24px 0;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  min-width: 0;
 }
 
-.hr-home-recognition--fading {
-  opacity: 0;
-  transform: translateY(-10px);
+@media (max-width: 1180px) {
+  .hr-home-attention-row {
+    grid-template-columns: 1fr;
+    max-width: 672px;
+  }
 }
 
 .hr-home-on-your-plate {
-  max-width: 672px;
+  max-width: 1180px;
   width: 100%;
   padding: 0 0 24px 0;
   opacity: 1;
@@ -100,6 +102,12 @@
 .hr-home-on-your-plate--fading {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+@media (max-width: 1180px) {
+  .hr-home-on-your-plate {
+    max-width: 672px;
+  }
 }
 
 /* ==================== INITIAL PROMPTS ==================== */

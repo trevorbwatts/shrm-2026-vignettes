@@ -1,0 +1,63 @@
+.wya-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 4px 0;
+  width: 100%;
+}
+
+/* ===== Featured item (left-aligned, badge + conversational note) ===== */
+.wya-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 0;
+  text-align: left;
+  animation: wya-feature-in 0.25s ease-out;
+}
+
+@keyframes wya-feature-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.wya-feature-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wya-feature-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* ===== Empty state ===== */
+.wya-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px 0;
+  text-align: left;
+}
+
+/* Allow Gridlet to fit content height in the initial-state mount */
+.wya-mount [data-fabric-component="Gridlet"] {
+  height: auto !important;
+}
+.wya-mount [data-fabric-component="Gridlet"] > section,
+.wya-mount [data-fabric-component="Gridlet"] > section > div {
+  height: auto !important;
+  flex: none !important;
+}

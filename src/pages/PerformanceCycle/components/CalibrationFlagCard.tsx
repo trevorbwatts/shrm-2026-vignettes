@@ -38,13 +38,13 @@ export function CalibrationFlagCard({ flag, onResolve }: CalibrationFlagCardProp
     <div className={`pc-flag-card${resolved ? ' pc-flag-card--resolved' : ''}`}>
       <div className="pc-flag-header" onClick={() => setExpanded((p) => !p)}>
         <div className="pc-flag-header-left">
-          <div className={`pc-flag-icon pc-flag-icon--${flag.type}`}>
-            <IconV2 name={meta.icon} size={16} color={meta.color} />
-          </div>
           <div>
             <div className="pc-flag-pill-row">
               <Pill muted type={flag.type === 'distribution-outlier' ? PillType.Warning : flag.type === 'similar-employees' ? PillType.Info : PillType.Discovery}>
-                {meta.label}
+                <span className="pc-flag-pill-content">
+                  <IconV2 name={meta.icon} size={12} color={meta.color} />
+                  {meta.label}
+                </span>
               </Pill>
               {resolved && <Pill muted type={PillType.Success}>Resolved</Pill>}
             </div>
@@ -137,7 +137,6 @@ export function CalibrationFlagCard({ flag, onResolve }: CalibrationFlagCardProp
                 <ul>
                   {flag.pair.differentiators.map((d, i) => (
                     <li key={i}>
-                      <IconV2 name="circle-dot-regular" size={10} color="neutral-medium" />
                       <BodyText size="small">{d}</BodyText>
                     </li>
                   ))}
