@@ -29,7 +29,7 @@
 
 /* ==================== GREETING HEADER ==================== */
 .hr-home-header {
-  max-width: 672px;
+  max-width: 1600px;
   width: 100%;
   margin: 0 auto;
   padding: 0 0 32px 0;
@@ -50,22 +50,49 @@
 .hr-home-greeting {
   display: flex;
   align-items: center;
-  gap: 32px;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+}
+
+.hr-home-greeting-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+}
+
+.hr-home-greeting-avatar {
+  flex-shrink: 0;
+}
+
+.hr-home-greeting-avatar [data-fabric-component="Avatar"],
+.hr-home-greeting-avatar [data-fabric-component="Avatar"] img,
+.hr-home-greeting-avatar [data-fabric-component="Avatar"] > div {
+  border-radius: 14px !important;
 }
 
 .hr-home-greeting-text {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
+}
+
+.hr-home-greeting-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 /* ==================== ATTENTION ROW (WYWA + WYA) ==================== */
 .hr-home-attention-row {
-  max-width: 1180px;
+  max-width: 1600px;
   width: 100%;
   padding: 0 0 24px 0;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
   align-items: start;
   opacity: 1;
@@ -83,7 +110,40 @@
   min-width: 0;
 }
 
-@media (max-width: 1180px) {
+/* Pin both attention-row cards (Quick Looks + Automations) to a fixed
+   height. The containers do NOT grow — content scrolls or sits inside. */
+.hr-home-attention-row .hr-home-attention-col {
+  height: 460px;
+}
+
+.hr-home-attention-row .hr-home-attention-col [data-fabric-component="Gridlet"] {
+  height: 100% !important;
+}
+
+/* Make each gridlet's section a flex column so the header takes its
+   natural height and the body wrapper (last child) flex-grows + scrolls. */
+.hr-home-attention-row .hr-home-attention-col [data-fabric-component="Gridlet"] > section {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: none !important;
+}
+
+.hr-home-attention-row .hr-home-attention-col [data-fabric-component="Gridlet"] > section > * {
+  flex: none !important;
+  height: auto !important;
+}
+
+.hr-home-attention-row .hr-home-attention-col [data-fabric-component="Gridlet"] > section > *:last-child {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+}
+
+.hr-home-attention-row .hr-home-attention-col [data-fabric-component="Gridlet"] > section > *:last-child > * {
+  height: 100%;
+}
+
+@media (max-width: 1600px) {
   .hr-home-attention-row {
     grid-template-columns: 1fr;
     max-width: 672px;
@@ -91,7 +151,7 @@
 }
 
 .hr-home-on-your-plate {
-  max-width: 1180px;
+  max-width: 1600px;
   width: 100%;
   padding: 0 0 24px 0;
   opacity: 1;
@@ -99,12 +159,24 @@
   transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
+.hr-home-personal-row {
+  max-width: 1600px;
+  width: 100%;
+  padding: 24px 0 0 0;
+}
+
+@media (max-width: 1600px) {
+  .hr-home-personal-row {
+    max-width: 672px;
+  }
+}
+
 .hr-home-on-your-plate--fading {
   opacity: 0;
   transform: translateY(-10px);
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 1600px) {
   .hr-home-on-your-plate {
     max-width: 672px;
   }
@@ -417,6 +489,17 @@
     flex-direction: column;
     text-align: center;
     gap: 16px;
+  }
+
+  .hr-home-greeting-left {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .hr-home-greeting-actions {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .hr-home-prompts-buttons {

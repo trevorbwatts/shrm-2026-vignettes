@@ -1,13 +1,29 @@
 import { useState } from 'react';
 import { Gridlet, BodyText, Avatar, Button, InlineMessage, TileV2, Pill, PillType, ProgressBar, IconV2, IconButton, RoundedToggle } from '@bamboohr/fabric';
+import { castAvatar, getCastMember } from '../../data/homeCast';
 import './InsightsCards.css';
+
+/**
+ * Build the inline employee shape every insight card expects
+ * (firstName, lastName, photoUrl, department) from a canonical
+ * cast id. Keeps card identity consistent with the rest of the home page.
+ */
+function makeEmployee(castId: string) {
+  const m = getCastMember(castId);
+  return {
+    firstName: m.firstName,
+    lastName: m.lastName,
+    photoUrl: castAvatar(castId, 150),
+    department: m.department,
+  };
+}
 
 // Scheduled 1:1s Card
 export function Scheduled1on1sCard() {
   const meetings = [
-    { id: 1, employee: { firstName: 'Alex', lastName: 'Kim', photoUrl: 'https://i.pravatar.cc/150?u=alex', department: 'Engineering' }, engagementScore: 58, daysSinceLastMeeting: 45, suggestedDate: 'Feb 10' },
-    { id: 2, employee: { firstName: 'Jordan', lastName: 'Lee', photoUrl: 'https://i.pravatar.cc/150?u=jordan', department: 'Design' }, engagementScore: 62, daysSinceLastMeeting: 38, suggestedDate: 'Feb 11' },
-    { id: 3, employee: { firstName: 'Taylor', lastName: 'Smith', photoUrl: 'https://i.pravatar.cc/150?u=taylor', department: 'Engineering' }, engagementScore: 65, daysSinceLastMeeting: 30, suggestedDate: 'Feb 12' },
+    { id: 1, employee: makeEmployee('priya-shah'), engagementScore: 58, daysSinceLastMeeting: 45, suggestedDate: 'Feb 10' },
+    { id: 2, employee: makeEmployee('riley-chen'), engagementScore: 62, daysSinceLastMeeting: 38, suggestedDate: 'Feb 11' },
+    { id: 3, employee: makeEmployee('marcus-thompson'), engagementScore: 65, daysSinceLastMeeting: 30, suggestedDate: 'Feb 12' },
   ];
 
   return (
@@ -160,9 +176,9 @@ export function YearOverYearTrendsCard() {
 // Engineering Team Focus Card
 export function EngineeringTeamFocusCard() {
   const teamMembers = [
-    { id: 1, employee: { firstName: 'Alex', lastName: 'Kim', photoUrl: 'https://i.pravatar.cc/150?u=alex' }, role: 'Senior Engineer', engagement: 58, risk: 'high', concern: 'Career growth' },
-    { id: 2, employee: { firstName: 'Sam', lastName: 'Park', photoUrl: 'https://i.pravatar.cc/150?u=sam' }, role: 'Engineer', engagement: 62, risk: 'medium', concern: 'Work-life balance' },
-    { id: 3, employee: { firstName: 'Chris', lastName: 'Wong', photoUrl: 'https://i.pravatar.cc/150?u=chris' }, role: 'Tech Lead', engagement: 65, risk: 'medium', concern: 'Recognition' },
+    { id: 1, employee: makeEmployee('priya-shah'), role: 'Senior Engineer', engagement: 58, risk: 'high', concern: 'Career growth' },
+    { id: 2, employee: makeEmployee('liam-oconnor'), role: 'Engineer', engagement: 62, risk: 'medium', concern: 'Work-life balance' },
+    { id: 3, employee: makeEmployee('james-kim'), role: 'Tech Lead', engagement: 65, risk: 'medium', concern: 'Recognition' },
   ];
 
   return (
@@ -226,9 +242,9 @@ export function EngineeringTeamFocusCard() {
 // Backup Coverage Card
 export function BackupCoverageCard() {
   const backupOptions = [
-    { id: 1, employee: { firstName: 'Morgan', lastName: 'Davis', photoUrl: 'https://i.pravatar.cc/150?u=morgan', department: 'Engineering' }, skills: ['React', 'Node.js'], capacity: 'Available', match: 95 },
-    { id: 2, employee: { firstName: 'Casey', lastName: 'Brown', photoUrl: 'https://i.pravatar.cc/150?u=casey', department: 'Engineering' }, skills: ['Python', 'AWS'], capacity: '50% Available', match: 85 },
-    { id: 3, employee: { firstName: 'Riley', lastName: 'Johnson', photoUrl: 'https://i.pravatar.cc/150?u=riley', department: 'Design' }, skills: ['UI/UX', 'Figma'], capacity: 'Available', match: 80 },
+    { id: 1, employee: makeEmployee('raj-mehta'), skills: ['React', 'Node.js'], capacity: 'Available', match: 95 },
+    { id: 2, employee: makeEmployee('diego-rodriguez'), skills: ['Python', 'AWS'], capacity: '50% Available', match: 85 },
+    { id: 3, employee: makeEmployee('riley-chen'), skills: ['UI/UX', 'Figma'], capacity: 'Available', match: 80 },
   ];
 
   return (
@@ -289,10 +305,10 @@ export function BackupCoverageCard() {
 // Workload Distribution Card
 export function WorkloadDistributionCard() {
   const employees = [
-    { id: 1, employee: { firstName: 'Jamie', lastName: 'Chen', photoUrl: 'https://i.pravatar.cc/150?u=jamie' }, currentLoad: 60, capacity: 40, status: 'available' },
-    { id: 2, employee: { firstName: 'Drew', lastName: 'Martinez', photoUrl: 'https://i.pravatar.cc/150?u=drew' }, currentLoad: 75, capacity: 25, status: 'limited' },
-    { id: 3, employee: { firstName: 'Avery', lastName: 'Wilson', photoUrl: 'https://i.pravatar.cc/150?u=avery' }, currentLoad: 95, capacity: 5, status: 'full' },
-    { id: 4, employee: { firstName: 'Quinn', lastName: 'Taylor', photoUrl: 'https://i.pravatar.cc/150?u=quinn' }, currentLoad: 50, capacity: 50, status: 'available' },
+    { id: 1, employee: makeEmployee('hannah-reyes'), currentLoad: 60, capacity: 40, status: 'available' },
+    { id: 2, employee: makeEmployee('theo-lambert'), currentLoad: 75, capacity: 25, status: 'limited' },
+    { id: 3, employee: makeEmployee('naomi-brooks'), currentLoad: 95, capacity: 5, status: 'full' },
+    { id: 4, employee: makeEmployee('wei-liu'), currentLoad: 50, capacity: 50, status: 'available' },
   ];
 
   return (
@@ -584,10 +600,10 @@ export function RootCauseAnalysisCard() {
 // Upcoming Birthdays Card
 export function UpcomingBirthdaysCard() {
   const birthdays = [
-    { id: 1, employee: { firstName: 'Marcus', lastName: 'Chen', photoUrl: 'https://i.pravatar.cc/150?u=marcus', department: 'Engineering' }, date: 'Feb 8', daysUntil: 1 },
-    { id: 2, employee: { firstName: 'Sarah', lastName: 'Johnson', photoUrl: 'https://i.pravatar.cc/150?u=sarahj', department: 'Marketing' }, date: 'Feb 15', daysUntil: 8 },
-    { id: 3, employee: { firstName: 'David', lastName: 'Kim', photoUrl: 'https://i.pravatar.cc/150?u=david', department: 'Sales' }, date: 'Feb 22', daysUntil: 15 },
-    { id: 4, employee: { firstName: 'Emily', lastName: 'Brown', photoUrl: 'https://i.pravatar.cc/150?u=emily', department: 'Design' }, date: 'Mar 1', daysUntil: 22 },
+    { id: 1, employee: makeEmployee('marcus-lee'), date: 'Feb 8', daysUntil: 1 },
+    { id: 2, employee: makeEmployee('hannah-nguyen'), date: 'Feb 15', daysUntil: 8 },
+    { id: 3, employee: makeEmployee('felix-torres'), date: 'Feb 22', daysUntil: 15 },
+    { id: 4, employee: makeEmployee('aisha-williams'), date: 'Mar 1', daysUntil: 22 },
   ];
 
   return (
@@ -717,9 +733,9 @@ export function AutoSendSetupCard() {
 // Recognition Event Card
 export function RecognitionEventCard() {
   const milestones = [
-    { id: 1, employee: { firstName: 'Jennifer', lastName: 'Wu', photoUrl: 'https://i.pravatar.cc/150?u=jennifer' }, milestone: '5-Year Anniversary', date: 'Feb 15' },
-    { id: 2, employee: { firstName: 'Michael', lastName: 'Scott', photoUrl: 'https://i.pravatar.cc/150?u=michael' }, milestone: '5-Year Anniversary', date: 'Feb 20' },
-    { id: 3, employee: { firstName: 'Lisa', lastName: 'Park', photoUrl: 'https://i.pravatar.cc/150?u=lisa' }, milestone: 'Exceeded Q4 Goals', date: 'Feb 10' },
+    { id: 1, employee: makeEmployee('olivia-martinez'), milestone: '5-Year Anniversary', date: 'Feb 15' },
+    { id: 2, employee: makeEmployee('tom-bennett'), milestone: '5-Year Anniversary', date: 'Feb 20' },
+    { id: 3, employee: makeEmployee('zara-ahmed'), milestone: 'Exceeded Q4 Goals', date: 'Feb 10' },
   ];
 
   return (
@@ -797,8 +813,8 @@ export function PastMilestonesCard() {
 // Milestone Achievements Card
 export function MilestoneAchievementsCard() {
   const achievements = [
-    { id: 1, employee: { firstName: 'Sarah', lastName: 'Chen', photoUrl: 'https://i.pravatar.cc/150?u=sarahc' }, achievement: 'Leadership Certification', date: 'Jan 28', type: 'certification' },
-    { id: 2, employee: { firstName: 'Michael', lastName: 'Park', photoUrl: 'https://i.pravatar.cc/150?u=michaelp' }, achievement: '5-Year Anniversary', date: 'Feb 1', type: 'anniversary' },
+    { id: 1, employee: makeEmployee('sarah-chen'), achievement: 'Leadership Certification', date: 'Jan 28', type: 'certification' },
+    { id: 2, employee: makeEmployee('priya-patel'), achievement: '5-Year Anniversary', date: 'Feb 1', type: 'anniversary' },
     { id: 3, employee: { firstName: 'Engineering Team', lastName: '', photoUrl: '' }, achievement: 'Exceeded Q4 Delivery Goals', date: 'Jan 31', type: 'goal' },
   ];
 
@@ -1067,7 +1083,7 @@ export function FeedbackTemplatesCard() {
 // New Hire Updates Card
 export function NewHireUpdatesCard() {
   const newHires = [
-    { id: 1, employee: { firstName: 'Alex', lastName: 'Kim', photoUrl: 'https://i.pravatar.cc/150?u=alexk' }, startDate: 'Feb 3', department: 'Engineering', onboardingProgress: 60, buddy: 'Sarah Chen' },
+    { id: 1, employee: makeEmployee('owen-bradley'), startDate: 'Feb 3', department: 'Engineering', onboardingProgress: 60, buddy: 'Sarah Chen' },
   ];
 
   const onboardingTasks = [
@@ -1246,9 +1262,9 @@ export function PtoPolicyCard() {
 // Pending Timesheets Card
 export function PendingTimesheetsCard() {
   const pending = [
-    { id: 1, employee: { firstName: 'Alex', lastName: 'Kim', photoUrl: 'https://i.pravatar.cc/150?u=alexk', department: 'Engineering' }, weekEnding: 'Feb 7', status: 'not-submitted' },
-    { id: 2, employee: { firstName: 'Jordan', lastName: 'Lee', photoUrl: 'https://i.pravatar.cc/150?u=jordan', department: 'Design' }, weekEnding: 'Feb 7', status: 'not-submitted' },
-    { id: 3, employee: { firstName: 'Casey', lastName: 'Brown', photoUrl: 'https://i.pravatar.cc/150?u=casey', department: 'Marketing' }, weekEnding: 'Feb 7', status: 'not-submitted' },
+    { id: 1, employee: makeEmployee('owen-bradley'), weekEnding: 'Feb 7', status: 'not-submitted' },
+    { id: 2, employee: makeEmployee('riley-chen'), weekEnding: 'Feb 7', status: 'not-submitted' },
+    { id: 3, employee: makeEmployee('diego-rodriguez'), weekEnding: 'Feb 7', status: 'not-submitted' },
   ];
 
   return (
@@ -1302,9 +1318,9 @@ export function PendingTimesheetsCard() {
 // Bonus Calculations Card
 export function BonusCalculationsCard() {
   const bonuses = [
-    { id: 1, employee: { firstName: 'Sarah', lastName: 'Chen', photoUrl: 'https://i.pravatar.cc/150?u=sarahc' }, rating: 'Exceeds', multiplier: '120%', amount: '$7,200' },
-    { id: 2, employee: { firstName: 'Michael', lastName: 'Park', photoUrl: 'https://i.pravatar.cc/150?u=michaelp' }, rating: 'Exceeds', multiplier: '120%', amount: '$6,800' },
-    { id: 3, employee: { firstName: 'Jennifer', lastName: 'Wu', photoUrl: 'https://i.pravatar.cc/150?u=jennifer' }, rating: 'Meets', multiplier: '100%', amount: '$5,500' },
+    { id: 1, employee: makeEmployee('sarah-chen'), rating: 'Exceeds', multiplier: '120%', amount: '$7,200' },
+    { id: 2, employee: makeEmployee('priya-patel'), rating: 'Exceeds', multiplier: '120%', amount: '$6,800' },
+    { id: 3, employee: makeEmployee('olivia-martinez'), rating: 'Meets', multiplier: '100%', amount: '$5,500' },
   ];
 
   return (
@@ -1454,9 +1470,9 @@ export function ReviewCalendarCard() {
 // Retention Meetings Card
 export function RetentionMeetingsCard() {
   const meetings = [
-    { id: 1, employee: { firstName: 'Alex', lastName: 'Kim', photoUrl: 'https://i.pravatar.cc/150?u=alex' }, riskLevel: 'High', suggestedDate: 'Feb 10-12', availability: 'Good' },
-    { id: 2, employee: { firstName: 'Jordan', lastName: 'Lee', photoUrl: 'https://i.pravatar.cc/150?u=jordan' }, riskLevel: 'High', suggestedDate: 'Feb 11-13', availability: 'Limited' },
-    { id: 3, employee: { firstName: 'Taylor', lastName: 'Smith', photoUrl: 'https://i.pravatar.cc/150?u=taylor' }, riskLevel: 'Medium', suggestedDate: 'Feb 14-16', availability: 'Good' },
+    { id: 1, employee: makeEmployee('priya-shah'), riskLevel: 'High', suggestedDate: 'Feb 10-12', availability: 'Good' },
+    { id: 2, employee: makeEmployee('riley-chen'), riskLevel: 'High', suggestedDate: 'Feb 11-13', availability: 'Limited' },
+    { id: 3, employee: makeEmployee('marcus-thompson'), riskLevel: 'Medium', suggestedDate: 'Feb 14-16', availability: 'Good' },
   ];
 
   return (

@@ -10,6 +10,7 @@ import {
 } from '@bamboohr/fabric';
 import { overnightSummary } from '../data/automationsData';
 import type { AutomationException } from '../data/automationsData';
+import { castAvatar, fullName } from '../data/homeCast';
 import { recognitionInsight } from '../data/recognitionData';
 import { ExceptionReviewSheet } from './ExceptionReviewSheet';
 import { RecognitionQueueModal } from './RecognitionQueueModal';
@@ -17,6 +18,7 @@ import './WorthYourAttentionCard.css';
 
 interface WorthYourAttentionCardProps {
   onActionComplete?: (message: string) => void;
+  onAskBambooHR?: (query: string) => void;
 }
 
 type ChecklistItemKind = 'exception' | 'recognition' | 'pto' | 'signature' | 'survey';
@@ -36,23 +38,27 @@ interface ChecklistItem {
   exception?: AutomationException;
 }
 
-export function WorthYourAttentionCard({ onActionComplete }: WorthYourAttentionCardProps) {
+export function WorthYourAttentionCard({ onActionComplete, onAskBambooHR }: WorthYourAttentionCardProps) {
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   const [skippedIds, setSkippedIds] = useState<Set<string>>(new Set());
   const [activeException, setActiveException] = useState<AutomationException | null>(null);
   const [isRecognitionOpen, setIsRecognitionOpen] = useState(false);
 
-  const exceptionItems: ChecklistItem[] = overnightSummary.exceptions.map((exception) => ({
-    id: `exception-${exception.id}`,
-    kind: 'exception',
-    badgeAvatar: { src: exception.employee.avatar, alt: exception.employee.name },
-    badgeTitle: exception.employee.name,
-    badgeSubtitle: `${exception.issue} · ${exception.daysOverdue} days overdue`,
-    message: `${exception.employee.name.split(' ')[0]} keeps opening my reminders but hasn't submitted. I think this one needs a person, not another nudge — mind taking a look?`,
-    estimate: '~2 min',
-    actionLabel: 'Review',
-    exception,
-  }));
+  const exceptionItems: ChecklistItem[] = overnightSummary.exceptions.map((exception) => {
+    const name = fullName(exception.employeeId);
+    const firstName = name.split(' ')[0];
+    return {
+      id: `exception-${exception.id}`,
+      kind: 'exception',
+      badgeAvatar: { src: castAvatar(exception.employeeId), alt: name },
+      badgeTitle: name,
+      badgeSubtitle: `${exception.issue} · ${exception.daysOverdue} days overdue`,
+      message: `${firstName} has opened all three reminders plus a Slack DM but still hasn't submitted his direct deposit info. He may have a question or just need a person to check in — I drafted a friendly note ready to send.`,
+      estimate: '~2 min',
+      actionLabel: 'Send a personal note',
+      exception,
+    };
+  });
 
   const items: ChecklistItem[] = [
     ...exceptionItems,
@@ -153,6 +159,22 @@ export function WorthYourAttentionCard({ onActionComplete }: WorthYourAttentionC
     setActiveException(null);
   };
 
+  const handleMarkResolved = (item: ChecklistItem) => {
+    if (!item.exception) return;
+    const name = fullName(item.exception.employeeId);
+    completeItem(item.id, `Marked ${name}'s record as resolved`);
+  };
+
+  const handleTakeDifferentAction = (item: ChecklistItem) => {
+    if (!item.exception) return;
+    const name = fullName(item.exception.employeeId);
+    const issue = item.exception.issue.toLowerCase();
+    const days = item.exception.daysOverdue;
+    const query = `Help me figure out what to do about ${name}'s ${issue}. It's been ${days} days overdue.`;
+    setCompletedIds((prev) => new Set(prev).add(item.id));
+    onAskBambooHR?.(query);
+  };
+
   const handleRecognitionSend = (count: number) => {
     completeItem(
       'recognition-cs',
@@ -180,45 +202,76 @@ export function WorthYourAttentionCard({ onActionComplete }: WorthYourAttentionC
       >
         <Gridlet.Body>
           <div className="wya-content">
+            <div className="wya-body">
+              {currentItem ? (
+                <div key={currentItem.id} className="wya-feature">
+                  <BadgeV2
+                    size="medium"
+                    icon={
+                      currentItem.badgeAvatar
+                        ? (
+                            <BadgeV2.Avatar
+                              src={currentItem.badgeAvatar.src}
+                              alt={currentItem.badgeAvatar.alt}
+                            />
+                          )
+                        : (currentItem.badgeIcon as BadgeIconName)
+                    }
+                    title={currentItem.badgeTitle}
+                    subtitle={currentItem.badgeSubtitle}
+                  />
 
-            {currentItem ? (
-              <div key={currentItem.id} className="wya-feature">
-                <BadgeV2
-                  size="medium"
-                  icon={
-                    currentItem.badgeAvatar
-                      ? (
-                          <BadgeV2.Avatar
-                            src={currentItem.badgeAvatar.src}
-                            alt={currentItem.badgeAvatar.alt}
-                          />
-                        )
-                      : (currentItem.badgeIcon as BadgeIconName)
-                  }
-                  title={currentItem.badgeTitle}
-                  subtitle={currentItem.badgeSubtitle}
-                />
+                  <BodyText size="medium" color="neutral-strong">
+                    {currentItem.message}
+                  </BodyText>
 
-                <BodyText size="medium" color="neutral-strong">
-                  {currentItem.message}
-                </BodyText>
-
-                <div className="wya-feature-meta">
-                  <IconV2 name="clock-regular" size={12} color="neutral-medium" />
-                  <BodyText size="extra-small" color="neutral-medium">
-                    {currentItem.estimate}
+                  <div className="wya-feature-meta">
+                    <IconV2 name="clock-regular" size={12} color="neutral-medium" />
+                    <BodyText size="extra-small" color="neutral-medium">
+                      {currentItem.estimate}
+                    </BodyText>
+                  </div>
+                </div>
+              ) : (
+                <div className="wya-empty">
+                  <IconV2 name="circle-check-solid" size={32} color="success-strong" />
+                  <BodyText size="small" color="neutral-strong" weight="semibold">
+                    All caught up — nice.
+                  </BodyText>
+                  <BodyText size="extra-small" color="neutral-weak">
+                    I'll keep an eye on things and bring more when something needs you.
                   </BodyText>
                 </div>
+              )}
+            </div>
 
-                <div className="wya-feature-actions">
-                  <Button
-                    size="medium"
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => handleAction(currentItem)}
-                  >
-                    {currentItem.actionLabel}
-                  </Button>
+            {currentItem && (
+              <div className="wya-footer">
+                <Button
+                  size="medium"
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => handleAction(currentItem)}
+                >
+                  {currentItem.actionLabel}
+                </Button>
+                {currentItem.kind === 'exception' ? (
+                  <>
+                    <TextButton
+                      size="small"
+                      type="muted"
+                      onClick={() => handleMarkResolved(currentItem)}
+                    >
+                      Mark resolved
+                    </TextButton>
+                    <TextButton
+                      size="small"
+                      onClick={() => handleTakeDifferentAction(currentItem)}
+                    >
+                      Take a different action
+                    </TextButton>
+                  </>
+                ) : (
                   <TextButton
                     size="small"
                     type="muted"
@@ -226,17 +279,7 @@ export function WorthYourAttentionCard({ onActionComplete }: WorthYourAttentionC
                   >
                     Maybe later
                   </TextButton>
-                </div>
-              </div>
-            ) : (
-              <div className="wya-empty">
-                <IconV2 name="circle-check-solid" size={32} color="success-strong" />
-                <BodyText size="small" color="neutral-strong" weight="semibold">
-                  All caught up — nice.
-                </BodyText>
-                <BodyText size="extra-small" color="neutral-weak">
-                  I'll keep an eye on things and bring more when something needs you.
-                </BodyText>
+                )}
               </div>
             )}
           </div>

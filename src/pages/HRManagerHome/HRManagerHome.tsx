@@ -1,9 +1,10 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { Headline, BodyText, Avatar, Button, InlineMessage, IconV2, IconButton, StyledBox, ActionTile } from '@bamboohr/fabric';
+import { Headline, BodyText, Avatar, Button, InlineMessage, IconV2, IconButton, StyledBox } from '@bamboohr/fabric';
+import { avatarFor } from '../../data/avatars';
 import { AIChatPrompt } from './components/AIChatPrompt';
 import { WhileYouWereAwayCard } from './components/WhileYouWereAwayCard';
-import { WorthYourAttentionCard } from './components/WorthYourAttentionCard';
 import { OnYourPlateCard } from './components/OnYourPlateCard';
+import { PersonalDashboardRow } from './components/PersonalDashboardRow';
 import { TeamHealthCard } from './components/TeamHealthCard';
 import { WhoIsOutCard } from './components/WhoIsOutCard';
 import { QuickActionsCard } from './components/QuickActionsCard';
@@ -1219,26 +1220,19 @@ function processQuery(query: string): AIResponse {
 }
 
 export function HRManagerHome() {
-  const userName = 'Maya';
-  const userPhoto = 'https://i.pravatar.cc/80?u=maya';
+  const userName = 'Jess';
+  const userPhoto = avatarFor('jess-marketing', 160);
+  const userTitle = 'Director, Demand Gen in Marketing';
 
   const [searchQuery, setSearchQuery] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [currentQuery, setCurrentQuery] = useState('');
-  const [promptsFading, setPromptsFading] = useState(false);
   const [slidedownMessage, setSlidedownMessage] = useState<string | null>(null);
   const [newEmployee, setNewEmployee] = useState<NewEmployeeInfo | null>(null);
   const latestMessageRef = useRef<HTMLDivElement>(null);
   const messageIdRef = useRef(0);
   const prevHistoryLength = useRef(0);
-
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return 'Good morning';
-    if (hour < 17) return 'Good afternoon';
-    return 'Good evening';
-  };
 
   // Scroll to the latest message when new content is added
   useEffect(() => {
@@ -1320,21 +1314,11 @@ export function HRManagerHome() {
     handleSubmit(suggestion);
   };
 
-  const handlePromptClick = (query: string) => {
-    setPromptsFading(true);
-
-    // Wait for fade animation, then submit
-    setTimeout(() => {
-      handleSubmit(query);
-    }, 300);
-  };
-
   const handleBackToHome = () => {
     setChatHistory([]);
     setSearchQuery('');
     setCurrentQuery('');
     setIsProcessing(false);
-    setPromptsFading(false);
   };
 
   // Get birthday celebration for AI message (single)
@@ -1699,20 +1683,40 @@ export function HRManagerHome() {
       {/* Greeting Section - Hidden when active */}
       <div className={`hr-home-header ${hasActiveContent ? 'hr-home-header--hidden' : ''}`}>
         <div className="hr-home-greeting">
-          <Avatar src={userPhoto} alt={userName} size={80} />
-          <div className="hr-home-greeting-text">
-            <Headline size="large">
-              {getGreeting()}, {userName}!
-            </Headline>
+          <div className="hr-home-greeting-left">
+            <div className="hr-home-greeting-avatar">
+              <Avatar src={userPhoto} alt={userName} size={80} />
+            </div>
+            <div className="hr-home-greeting-text">
+              <Headline size="extra-large" color="primary">
+                Hi, {userName}
+              </Headline>
+              <BodyText color="neutral-weak">{userTitle}</BodyText>
+            </div>
+          </div>
+          <div className="hr-home-greeting-actions">
+            <Button
+              color="secondary"
+              startIcon={<IconV2 name="circle-plus-regular" size={16} />}
+              endIcon={<IconV2 name="chevron-down-regular" size={12} />}
+            >
+              New
+            </Button>
+            <Button
+              color="secondary"
+              startIcon={<IconV2 name="grid-2-regular" size={16} />}
+            >
+              Edit
+            </Button>
           </div>
         </div>
       </div>
 
-      {/* While You Were Away + Worth Your Attention - same row, only in initial state */}
+      {/* On Your Plate + Automations - same row, only in initial state */}
       {isInitialState && (
-        <div className={`hr-home-attention-row ${promptsFading ? 'hr-home-attention-row--fading' : ''}`}>
+        <div className="hr-home-attention-row">
           <div className="hr-home-attention-col wya-mount">
-            <WorthYourAttentionCard
+            <OnYourPlateCard
               onActionComplete={(message) => setSlidedownMessage(message)}
             />
           </div>
@@ -1722,54 +1726,10 @@ export function HRManagerHome() {
         </div>
       )}
 
-      {/* On your plate - persistent active work, only visible in initial state */}
+      {/* Personal dashboard row - My Time / Time Off / My Stuff + community feed */}
       {isInitialState && (
-        <div className={`hr-home-on-your-plate wywa-mount ${promptsFading ? 'hr-home-on-your-plate--fading' : ''}`}>
-          <OnYourPlateCard />
-        </div>
-      )}
-
-      {/* Initial prompts - Only visible in initial state */}
-      {isInitialState && (
-        <div className={`hr-home-initial-prompts ${promptsFading ? 'hr-home-initial-prompts--fading' : ''}`}>
-          <div className="hr-home-prompts-buttons">
-            <ActionTile
-              title="Who is out today?"
-              icon="calendar-xmark-solid"
-              variant="ai"
-              onClick={() => handlePromptClick('Who is out today?')}
-            />
-            <ActionTile
-              title="How is my team doing?"
-              icon="heart-pulse-solid"
-              variant="ai"
-              onClick={() => handlePromptClick('How is my team doing?')}
-            />
-            <ActionTile
-              title="What needs my attention?"
-              icon="bell-solid"
-              variant="ai"
-              onClick={() => handlePromptClick('What needs my attention?')}
-            />
-            <ActionTile
-              title="Pending time off requests"
-              icon="plane-departure-solid"
-              variant="ai"
-              onClick={() => handlePromptClick('Show me pending time off requests')}
-            />
-            <ActionTile
-              title="Upcoming celebrations"
-              icon="cake-candles-solid"
-              variant="ai"
-              onClick={() => handlePromptClick('Any birthdays or anniversaries coming up?')}
-            />
-            <ActionTile
-              title="Performance updates"
-              icon="chart-line-up-solid"
-              variant="ai"
-              onClick={() => handlePromptClick('Show me team performance updates')}
-            />
-          </div>
+        <div className="hr-home-personal-row">
+          <PersonalDashboardRow />
         </div>
       )}
 

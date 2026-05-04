@@ -1,0 +1,272 @@
+.pdr-dashboard {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.pdr-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pdr-right-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.pdr-right-col > [data-fabric-component="Gridlet"],
+.pdr-right-col > [data-fabric-component="Gridlet"] > section,
+.pdr-right-col > [data-fabric-component="Gridlet"] > section > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========== Widget body ========== */
+.pdr-widget-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 0;
+}
+
+.pdr-widget-body--no-pad {
+  gap: 0;
+  padding: 0;
+}
+
+/* ========== My Time ========== */
+.pdr-time-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  padding: 8px 0 4px;
+}
+
+.pdr-clock-in-btn {
+  width: 100%;
+}
+
+.pdr-clock-in-btn > * {
+  width: 100%;
+}
+
+.pdr-time-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pdr-time-entry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.pdr-week-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pdr-week-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.pdr-week-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ========== Time Off ========== */
+.pdr-timeoff-balances {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.pdr-timeoff-balance {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.pdr-timeoff-amount {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pdr-timeoff-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ========== My Stuff ========== */
+.pdr-stuff-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.pdr-stuff-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--fabric-color-surface-neutral-x-weak, #f5f4f1);
+  flex-shrink: 0;
+}
+
+.pdr-stuff-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* ========== Feed widget ========== */
+.pdr-feed-widget {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pdr-feed-tabs {
+  border-bottom: 1px solid var(--fabric-color-border-neutral-x-weak, #e4e3e0);
+}
+
+.pdr-tab-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pdr-feed-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.pdr-feed-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 8px;
+  border-bottom: 1px solid var(--fabric-color-border-neutral-x-weak, #e4e3e0);
+  margin-bottom: 4px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pdr-feed-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ========== Post list ========== */
+.pdr-post-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.pdr-post-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--fabric-color-border-neutral-x-weak, #e4e3e0);
+  border-radius: 4px;
+  transition: background-color 0.1s ease;
+  cursor: pointer;
+}
+
+.pdr-post-item--hovered {
+  background-color: var(--fabric-color-surface-neutral-x-weak, #f5f4f1);
+}
+
+.pdr-post-item:last-child {
+  border-bottom: none;
+}
+
+.pdr-post-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.pdr-post-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pdr-post-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pdr-post-hover-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ========== What's Happening items ========== */
+.pdr-happening-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background-color: var(--fabric-color-surface-neutral-x-weak, #f5f4f1);
+}
+
+.pdr-happening-icon--circle {
+  border-radius: 50%;
+}
+
+.pdr-happening-icon--square {
+  border-radius: 8px;
+}
+
+.pdr-happening-subtitle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pdr-happening-warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .pdr-dashboard {
+    grid-template-columns: 1fr;
+  }
+}

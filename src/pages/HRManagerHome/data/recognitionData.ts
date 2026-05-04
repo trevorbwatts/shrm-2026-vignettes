@@ -1,3 +1,15 @@
+/**
+ * Recognition queue data.
+ *
+ * Per-employee recognition metadata (days-since, context, draft message)
+ * lives here. Identity (name, role, department, avatar) is sourced from
+ * the canonical `homeCast` so the same Sarah Chen / Marcus Lee / etc.
+ * shows up identically in the Automations feed, Insights cards, and
+ * everywhere else.
+ */
+
+import { castAvatar, getCastMember } from './homeCast';
+
 export type RecognitionContextType = 'milestone' | 'project' | 'peer-mention' | 'goal-hit';
 
 export interface RecognitionEmployee {
@@ -6,6 +18,14 @@ export interface RecognitionEmployee {
   role: string;
   department: string;
   avatar: string;
+  daysSinceLastRecognized: number;
+  contextType: RecognitionContextType;
+  contextLabel: string;
+  contextDetail: string;
+  draftMessage: string;
+}
+
+interface RecognitionMeta {
   daysSinceLastRecognized: number;
   contextType: RecognitionContextType;
   contextLabel: string;
@@ -22,13 +42,8 @@ export const recognitionInsight = {
     "14 team members haven't been recognized in 90+ days. I've drafted messages from milestones, project work, and peer mentions in 1:1 notes.",
 };
 
-export const recognitionEmployees: RecognitionEmployee[] = [
-  {
-    id: 'sarah-chen',
-    name: 'Sarah Chen',
-    role: 'Senior Customer Success Manager',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=sarah-chen-cs',
+const recognitionMeta: Record<string, RecognitionMeta> = {
+  'sarah-chen': {
     daysSinceLastRecognized: 142,
     contextType: 'milestone',
     contextLabel: '5-year anniversary',
@@ -36,12 +51,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "Five years of carrying customers through the hardest parts of their journey — congrats on the anniversary, Sarah. Your steady hand has made this team what it is. Here's to many more.",
   },
-  {
-    id: 'marcus-lee',
-    name: 'Marcus Lee',
-    role: 'Customer Success Manager',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=marcus-lee-cs',
+  'marcus-lee': {
     daysSinceLastRecognized: 118,
     contextType: 'project',
     contextLabel: 'Onboarding revamp shipped',
@@ -49,12 +59,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "The new onboarding flow shipped because you wouldn't let it go out half-baked, Marcus. Customers are getting to value faster, and the team has a model to follow. Real impact.",
   },
-  {
-    id: 'priya-patel',
-    name: 'Priya Patel',
-    role: 'Solutions Architect',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=priya-patel-cs',
+  'priya-patel': {
     daysSinceLastRecognized: 96,
     contextType: 'peer-mention',
     contextLabel: 'Peer mention in retro',
@@ -62,12 +67,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "Heard your name come up in the Q1 retro for unblocking the team three different times. The kind of work that doesn't show up in a dashboard but holds everything together. Thank you, Priya.",
   },
-  {
-    id: 'james-kim',
-    name: 'James Kim',
-    role: 'Customer Success Manager',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=james-kim-cs',
+  'james-kim': {
     daysSinceLastRecognized: 134,
     contextType: 'goal-hit',
     contextLabel: 'Hit team NPS goal',
@@ -75,12 +75,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "62 NPS in Q1 — that's not luck, that's the way you've coached this team to actually listen to customers. Thanks for setting the bar, James.",
   },
-  {
-    id: 'aisha-williams',
-    name: 'Aisha Williams',
-    role: 'Renewal Specialist',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=aisha-williams-cs',
+  'aisha-williams': {
     daysSinceLastRecognized: 108,
     contextType: 'goal-hit',
     contextLabel: 'Q1 quota exceeded',
@@ -88,12 +83,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "118% to quota in a quarter where renewals were anything but easy — strong work, Aisha. The way you keep accounts close pays off in moments like this.",
   },
-  {
-    id: 'diego-rodriguez',
-    name: 'Diego Rodriguez',
-    role: 'Customer Onboarding Specialist',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=diego-rodriguez-cs',
+  'diego-rodriguez': {
     daysSinceLastRecognized: 91,
     contextType: 'project',
     contextLabel: 'Migration project complete',
@@ -101,12 +91,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "Fifty migrations, on time, no fires — Diego, that takes patience and a lot of careful work. Customers landed soft because of you.",
   },
-  {
-    id: 'hannah-nguyen',
-    name: 'Hannah Nguyen',
-    role: 'Customer Success Manager',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=hannah-nguyen-cs',
+  'hannah-nguyen': {
     daysSinceLastRecognized: 127,
     contextType: 'project',
     contextLabel: 'Led training initiative',
@@ -114,12 +99,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "Building enablement on top of a full book of business is hard, and you did it generously, Hannah. The team is sharper because you took the time.",
   },
-  {
-    id: 'tom-bennett',
-    name: 'Tom Bennett',
-    role: 'Account Manager',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=tom-bennett-cs',
+  'tom-bennett': {
     daysSinceLastRecognized: 102,
     contextType: 'goal-hit',
     contextLabel: 'Major renewal closed',
@@ -127,12 +107,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "Acme was at risk and you closed it cleanly. That kind of recovery work doesn't happen without trust built over months. Great work, Tom.",
   },
-  {
-    id: 'olivia-martinez',
-    name: 'Olivia Martinez',
-    role: 'CS Operations Lead',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=olivia-martinez-cs',
+  'olivia-martinez': {
     daysSinceLastRecognized: 156,
     contextType: 'project',
     contextLabel: 'Process improvement',
@@ -140,12 +115,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "Six days off the average ramp — Olivia, that's the kind of behind-the-scenes work that quietly changes the whole engine. Thank you.",
   },
-  {
-    id: 'raj-mehta',
-    name: 'Raj Mehta',
-    role: 'Solutions Engineer',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=raj-mehta-cs',
+  'raj-mehta': {
     daysSinceLastRecognized: 113,
     contextType: 'peer-mention',
     contextLabel: 'Critical escalation resolved',
@@ -153,12 +123,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "Polaris was a hard week and you carried it. Hearing from the CSM that you saved that account isn't a small thing — it's the kind of work the company runs on.",
   },
-  {
-    id: 'zara-ahmed',
-    name: 'Zara Ahmed',
-    role: 'Customer Success Manager',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=zara-ahmed-cs',
+  'zara-ahmed': {
     daysSinceLastRecognized: 98,
     contextType: 'peer-mention',
     contextLabel: 'Mentoring new hires',
@@ -166,12 +131,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "Two new CSMs both said the same thing in their 30-days: that you made the start manageable. Mentorship is invisible work — thank you for doing it well, Zara.",
   },
-  {
-    id: 'felix-torres',
-    name: 'Felix Torres',
-    role: 'Renewal Specialist',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=felix-torres-cs',
+  'felix-torres': {
     daysSinceLastRecognized: 121,
     contextType: 'peer-mention',
     contextLabel: 'Cross-team partnership',
@@ -179,12 +139,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "The Sales team picked you out as the easiest CS partner to work with — Felix, that reputation is rare and worth saying out loud. Thanks for representing us so well.",
   },
-  {
-    id: 'naomi-brooks',
-    name: 'Naomi Brooks',
-    role: 'Customer Success Manager',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=naomi-brooks-cs',
+  'naomi-brooks': {
     daysSinceLastRecognized: 105,
     contextType: 'peer-mention',
     contextLabel: 'Customer testimonial',
@@ -192,12 +147,7 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "A customer wrote in by name to thank you, Naomi. That doesn't happen often, and it's the clearest signal that the relationship work matters. Great job.",
   },
-  {
-    id: 'wei-liu',
-    name: 'Wei Liu',
-    role: 'Customer Insights Analyst',
-    department: 'Customer Success',
-    avatar: 'https://i.pravatar.cc/120?u=wei-liu-cs',
+  'wei-liu': {
     daysSinceLastRecognized: 138,
     contextType: 'project',
     contextLabel: 'Quarterly insights report',
@@ -205,7 +155,21 @@ export const recognitionEmployees: RecognitionEmployee[] = [
     draftMessage:
       "The Q1 insights report ended up on the leadership table because it was sharp and on time, Wei. You make the rest of us smarter — thank you for that.",
   },
-];
+};
+
+export const recognitionEmployees: RecognitionEmployee[] = Object.entries(
+  recognitionMeta,
+).map(([id, meta]) => {
+  const member = getCastMember(id);
+  return {
+    id,
+    name: `${member.firstName} ${member.lastName}`,
+    role: member.role,
+    department: member.department,
+    avatar: castAvatar(id),
+    ...meta,
+  };
+});
 
 export const recognitionContextMeta: Record<
   RecognitionContextType,

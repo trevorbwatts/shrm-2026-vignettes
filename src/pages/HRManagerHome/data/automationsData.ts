@@ -1,3 +1,11 @@
+/**
+ * Automations data.
+ *
+ * Every employee reference is an `employeeId` that resolves through
+ * `homeCast.ts`. No inline names or avatars — keep the cast canonical
+ * so the same Priya Shah / Marcus Thompson / etc. shows up everywhere.
+ */
+
 export interface AutomationLastRun {
   contacted: number;
   resolved: number;
@@ -26,12 +34,7 @@ export interface ExceptionTimelineEntry {
 export interface AutomationException {
   id: string;
   automationId: string;
-  employee: {
-    name: string;
-    role: string;
-    department: string;
-    avatar: string;
-  };
+  employeeId: string;
   issue: string;
   issueDescription: string;
   daysOverdue: number;
@@ -39,48 +42,36 @@ export interface AutomationException {
   timeline: ExceptionTimelineEntry[];
 }
 
-export interface ResolvedTask {
-  id: string;
-  employeeName: string;
-  employeeAvatar: string;
-  detail: string;
-  automationName: string;
-  resolvedAt: string;
+/**
+ * Audit-log style log entry for the Automations feed.
+ *
+ * `parts` is a sentence broken into segments. Highlighted segments render
+ * green (the changed entity, the affected employee). Plain segments render
+ * neutral.
+ */
+export interface AutomationLogPart {
+  text: string;
+  highlight?: boolean;
 }
 
-export type AutomationActivityStatus =
-  | 'in-progress'
-  | 'paused'
-  | 'completed'
-  | 'undone'
-  | 'cancelled';
-
-export interface AutomationActivity {
+export interface AutomationLogEntry {
   id: string;
-  status: AutomationActivityStatus;
-  employeeName: string;
-  employeeAvatar: string;
-  detail: string;
-  automationName: string;
+  automationId: string;
+  icon: string;
+  parts: AutomationLogPart[];
+  category: string;
   timestamp: string;
-  steps: string[];
 }
 
-export interface ActivityTemplate {
-  employeeName: string;
-  employeeAvatar: string;
-  detail: string;
-  automationName: string;
-  steps: string[];
+export interface AutomationLogTemplate {
+  automationId: string;
+  icon: string;
+  parts: AutomationLogPart[];
+  category: string;
 }
 
 export interface OvernightSummary {
-  since: string;
-  totalResolved: number;
-  totalContacted: number;
-  automationsRun: number;
   exceptions: AutomationException[];
-  resolvedTasks: ResolvedTask[];
 }
 
 export const automations: Automation[] = [
@@ -160,86 +151,11 @@ export const automations: Automation[] = [
 ];
 
 export const overnightSummary: OvernightSummary = {
-  since: 'yesterday at 5:32 PM',
-  totalResolved: 8,
-  totalContacted: 12,
-  automationsRun: 3,
-  resolvedTasks: [
-    {
-      id: 'r1',
-      employeeName: 'Priya Shah',
-      employeeAvatar: 'https://i.pravatar.cc/120?u=priya-shah',
-      detail: 'Submitted emergency contact info',
-      automationName: 'Missing Data Follow-up',
-      resolvedAt: '11:42 PM',
-    },
-    {
-      id: 'r2',
-      employeeName: 'Devon Carter',
-      employeeAvatar: 'https://i.pravatar.cc/120?u=devon-carter',
-      detail: 'Completed I-9 Section 1',
-      automationName: 'Missing Data Follow-up',
-      resolvedAt: '9:17 PM',
-    },
-    {
-      id: 'r3',
-      employeeName: 'Hannah Reyes',
-      employeeAvatar: 'https://i.pravatar.cc/120?u=hannah-reyes',
-      detail: 'Submitted W-4',
-      automationName: 'Missing Data Follow-up',
-      resolvedAt: '8:03 PM',
-    },
-    {
-      id: 'r4',
-      employeeName: 'Theo Lambert',
-      employeeAvatar: 'https://i.pravatar.cc/120?u=theo-lambert',
-      detail: 'Confirmed mailing address',
-      automationName: 'Missing Data Follow-up',
-      resolvedAt: '7:48 PM',
-    },
-    {
-      id: 'r5',
-      employeeName: 'Ana Velasquez',
-      employeeAvatar: 'https://i.pravatar.cc/120?u=ana-velasquez',
-      detail: 'Uploaded direct deposit form',
-      automationName: 'Missing Data Follow-up',
-      resolvedAt: '6:12 PM',
-    },
-    {
-      id: 'r6',
-      employeeName: 'Jamal Brooks',
-      employeeAvatar: 'https://i.pravatar.cc/120?u=jamal-brooks',
-      detail: '5-year work anniversary message sent',
-      automationName: 'Birthday & Anniversary Messages',
-      resolvedAt: '6:00 AM',
-    },
-    {
-      id: 'r7',
-      employeeName: 'Sofia Pereira',
-      employeeAvatar: 'https://i.pravatar.cc/120?u=sofia-pereira',
-      detail: 'Birthday message sent',
-      automationName: 'Birthday & Anniversary Messages',
-      resolvedAt: '6:00 AM',
-    },
-    {
-      id: 'r8',
-      employeeName: 'Liam O\'Connor',
-      employeeAvatar: 'https://i.pravatar.cc/120?u=liam-oconnor',
-      detail: '30-day check-in scheduled with manager',
-      automationName: 'New Hire Check-ins',
-      resolvedAt: 'Yesterday 4:00 PM',
-    },
-  ],
   exceptions: [
     {
       id: 'marcus-thompson-dd',
       automationId: 'missing-data',
-      employee: {
-        name: 'Marcus Thompson',
-        role: 'Senior Designer',
-        department: 'Design',
-        avatar: 'https://i.pravatar.cc/120?u=marcus-thompson',
-      },
+      employeeId: 'marcus-thompson',
       issue: 'Direct deposit info',
       issueDescription: 'Direct deposit information has not been submitted.',
       daysOverdue: 12,
@@ -256,251 +172,168 @@ export const overnightSummary: OvernightSummary = {
 
 export const weeklyTaskCount = 47;
 
-export const initialAutomationActivities: AutomationActivity[] = [
+// Helpers for building log sentences. `t` = plain segment, `h` = highlight.
+const t = (text: string): AutomationLogPart => ({ text });
+const h = (text: string): AutomationLogPart => ({ text, highlight: true });
+
+export const initialAutomationLogEntries: AutomationLogEntry[] = [
   {
-    id: 'act-1',
-    status: 'completed',
-    employeeName: 'Priya Shah',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=priya-shah',
-    detail: 'Submitted emergency contact info',
-    automationName: 'Missing Data Follow-up',
-    timestamp: '11:42 PM',
-    steps: [
-      'Detected missing emergency contact field on Apr 28',
-      'Sent reminder email at 9:30 PM',
-      'Sent SMS nudge at 10:15 PM after no response',
-      'Confirmed submission via mobile portal at 11:42 PM',
-      'Updated HRIS record and closed the task',
-    ],
+    id: 'log-1',
+    automationId: 'missing-data',
+    icon: 'address-card-regular',
+    parts: [h('Emergency contact info'), t(' was added for '), h('Priya Shah')],
+    category: 'Employee Records',
+    timestamp: 'Yesterday · 11:42 PM',
   },
   {
-    id: 'act-2',
-    status: 'completed',
-    employeeName: 'Devon Carter',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=devon-carter',
-    detail: 'Completed I-9 Section 1',
-    automationName: 'Missing Data Follow-up',
-    timestamp: '9:17 PM',
-    steps: [
-      'Detected I-9 Section 1 incomplete on day 2',
-      'Sent personalized walkthrough link at 6:00 PM',
-      'Employee opened the link at 8:45 PM',
-      'Section 1 submitted and validated at 9:17 PM',
-    ],
+    id: 'log-2',
+    automationId: 'missing-data',
+    icon: 'id-card-regular',
+    parts: [h('I-9 Section 1'), t(' was validated for '), h('Devon Carter')],
+    category: 'Employee Records',
+    timestamp: 'Yesterday · 9:17 PM',
   },
   {
-    id: 'act-3',
-    status: 'completed',
-    employeeName: 'Hannah Reyes',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=hannah-reyes',
-    detail: 'Submitted W-4',
-    automationName: 'Missing Data Follow-up',
-    timestamp: '8:03 PM',
-    steps: [
-      'Detected missing W-4 on Apr 27',
-      'Sent reminder email with prefilled link',
-      'Employee submitted W-4 at 8:03 PM',
-      'Form filed and routed to payroll',
-    ],
+    id: 'log-3',
+    automationId: 'missing-data',
+    icon: 'file-invoice-dollar-regular',
+    parts: [h('W-4 form'), t(' was filed for '), h('Hannah Reyes')],
+    category: 'Payroll',
+    timestamp: 'Yesterday · 8:03 PM',
   },
   {
-    id: 'act-4',
-    status: 'completed',
-    employeeName: 'Theo Lambert',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=theo-lambert',
-    detail: 'Confirmed mailing address',
-    automationName: 'Missing Data Follow-up',
-    timestamp: '7:48 PM',
-    steps: [
-      'Flagged stale mailing address (last updated 2023)',
-      'Sent confirmation request via email',
-      'Employee confirmed address unchanged at 7:48 PM',
-    ],
+    id: 'log-4',
+    automationId: 'missing-data',
+    icon: 'location-dot-regular',
+    parts: [h('Mailing address'), t(' was confirmed for '), h('Theo Lambert')],
+    category: 'Employee Records',
+    timestamp: 'Yesterday · 7:48 PM',
   },
   {
-    id: 'act-5',
-    status: 'completed',
-    employeeName: 'Ana Velasquez',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=ana-velasquez',
-    detail: 'Uploaded direct deposit form',
-    automationName: 'Missing Data Follow-up',
-    timestamp: '6:12 PM',
-    steps: [
-      'Detected missing direct deposit form',
-      'Sent reminder with secure upload link',
-      'Employee uploaded voided check at 6:12 PM',
-      'Routed to payroll for verification',
-    ],
+    id: 'log-5',
+    automationId: 'compliance-training',
+    icon: 'shield-check-regular',
+    parts: [h('2026 handbook'), t(' was acknowledged by '), h('Riley Chen')],
+    category: 'Compliance',
+    timestamp: 'Yesterday · 6:34 PM',
   },
   {
-    id: 'act-6',
-    status: 'completed',
-    employeeName: 'Jamal Brooks',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=jamal-brooks',
-    detail: '5-year work anniversary message sent',
-    automationName: 'Birthday & Anniversary Messages',
-    timestamp: '6:00 AM',
-    steps: [
-      'Anniversary trigger fired at 6:00 AM',
-      'Generated personalized message referencing role history',
-      'Sent message via Slack and email',
-    ],
+    id: 'log-6',
+    automationId: 'birthday-anniversary',
+    icon: 'cake-candles-regular',
+    parts: [h('6-year anniversary message'), t(' was sent to '), h('Sarah Chen')],
+    category: 'Recognition',
+    timestamp: 'Today · 6:00 AM',
   },
   {
-    id: 'act-7',
-    status: 'completed',
-    employeeName: 'Sofia Pereira',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=sofia-pereira',
-    detail: 'Birthday message sent',
-    automationName: 'Birthday & Anniversary Messages',
-    timestamp: '6:00 AM',
-    steps: [
-      'Birthday trigger fired at 6:00 AM',
-      'Generated friendly message with manager cc',
-      'Posted in #team-design and emailed Sofia',
-    ],
+    id: 'log-7',
+    automationId: 'new-hire-checkins',
+    icon: 'calendar-check-regular',
+    parts: [h('30-day check-in'), t(' was scheduled for '), h("Liam O'Connor")],
+    category: 'New Hires',
+    timestamp: 'Yesterday · 5:18 PM',
   },
   {
-    id: 'act-8',
-    status: 'completed',
-    employeeName: "Liam O'Connor",
-    employeeAvatar: 'https://i.pravatar.cc/120?u=liam-oconnor',
-    detail: '30-day check-in scheduled with manager',
-    automationName: 'New Hire Check-ins',
-    timestamp: 'Yesterday 4:00 PM',
-    steps: [
-      'Detected 30-day milestone for Liam',
-      "Found a 30-min slot on manager's calendar",
-      'Drafted check-in prompts and shared with manager',
-      'Calendar invite sent and accepted',
-    ],
+    id: 'log-8',
+    automationId: 'new-hire-checkins',
+    icon: 'calendar-check-regular',
+    parts: [h('1-week check-in'), t(' was scheduled for '), h('Owen Bradley')],
+    category: 'New Hires',
+    timestamp: 'Yesterday · 4:00 PM',
   },
 ];
 
-export const activityTemplates: ActivityTemplate[] = [
+/**
+ * Live feed pool. Each template is a stable (employee × action) pair drawn
+ * from the canonical cast — never a stranger you've never seen before.
+ */
+export const automationLogTemplates: AutomationLogTemplate[] = [
   {
-    employeeName: 'Riley Chen',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=riley-chen',
-    detail: 'Submitted emergency contact info',
-    automationName: 'Missing Data Follow-up',
-    steps: [
-      'Detected missing emergency contact field',
-      'Sent personalized email reminder',
-      'Employee opened reminder on mobile',
-      'Submission received and HRIS updated',
-    ],
+    automationId: 'missing-data',
+    icon: 'address-card-regular',
+    parts: [h('Emergency contact info'), t(' was updated for '), h('Riley Chen')],
+    category: 'Employee Records',
   },
   {
-    employeeName: 'Marisol Vega',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=marisol-vega',
-    detail: 'Acknowledged updated handbook',
-    automationName: 'Compliance Training Reminders',
-    steps: [
-      'Flagged unacknowledged 2026 handbook',
-      'Sent reminder with 2-min summary of changes',
-      'Acknowledgement recorded with signed timestamp',
-    ],
+    automationId: 'missing-data',
+    icon: 'bell-slash-regular',
+    parts: [h('Direct deposit reminders'), t(' were paused for '), h('Marcus Thompson')],
+    category: 'Payroll',
   },
   {
-    employeeName: 'Nathan Park',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=nathan-park',
-    detail: 'Work permit renewal in motion',
-    automationName: 'Document Expiration Alerts',
-    steps: [
-      'Detected work permit expiring in 45 days',
-      'Notified Nathan and his manager',
-      'Started renewal task in immigration vendor portal',
-    ],
+    automationId: 'birthday-anniversary',
+    icon: 'cake-candles-regular',
+    parts: [h('Birthday message'), t(' was sent to '), h('Aisha Williams')],
+    category: 'Recognition',
   },
   {
-    employeeName: 'Aisha Patel',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=aisha-patel',
-    detail: 'Birthday message sent',
-    automationName: 'Birthday & Anniversary Messages',
-    steps: [
-      'Birthday trigger fired',
-      'Generated personalized message with team highlights',
-      'Posted in #team-eng and emailed Aisha',
-    ],
+    automationId: 'missing-data',
+    icon: 'file-invoice-dollar-regular',
+    parts: [h('Tax form'), t(' was refiled for '), h('Diego Rodriguez')],
+    category: 'Payroll',
   },
   {
-    employeeName: 'Marcus Thompson',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=marcus-thompson',
-    detail: 'Direct deposit reminder #4 paused',
-    automationName: 'Missing Data Follow-up',
-    steps: [
-      'Reminder #3 ignored — opened twice, no submission',
-      'Paused further reminders to avoid nagging',
-      'Routed exception to HR for human follow-up',
-    ],
+    automationId: 'compliance-training',
+    icon: 'shield-check-regular',
+    parts: [h('Handbook'), t(' was acknowledged by '), h('James Kim')],
+    category: 'Compliance',
   },
   {
-    employeeName: 'Eva Lindqvist',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=eva-lindqvist',
-    detail: 'Tax form refiled after correction',
-    automationName: 'Missing Data Follow-up',
-    steps: [
-      'Detected tax form rejected by payroll provider',
-      'Sent corrected template with highlighted fields',
-      'Employee resubmitted within 12 minutes',
-      'Payroll provider accepted the new submission',
-    ],
+    automationId: 'document-expiration',
+    icon: 'file-certificate-regular',
+    parts: [h('PHR certification renewal'), t(' was scheduled for '), h('Naomi Brooks')],
+    category: 'Documents',
   },
   {
-    employeeName: 'Owen Bradley',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=owen-bradley',
-    detail: '1-week check-in scheduled',
-    automationName: 'New Hire Check-ins',
-    steps: [
-      '7-day milestone reached for Owen',
-      "Found 30-min slot on manager's calendar",
-      'Drafted check-in prompts and sent invite',
-    ],
+    automationId: 'document-expiration',
+    icon: 'file-circle-exclamation-regular',
+    parts: [h('Work permit renewal'), t(' was started for '), h('Tom Bennett')],
+    category: 'Documents',
   },
   {
-    employeeName: 'Helena Ortiz',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=helena-ortiz',
-    detail: '10-year anniversary message sent',
-    automationName: 'Birthday & Anniversary Messages',
-    steps: [
-      'Anniversary trigger fired',
-      'Pulled milestones and team callouts from history',
-      'Posted message and notified leadership',
-    ],
+    automationId: 'new-hire-checkins',
+    icon: 'calendar-check-regular',
+    parts: [h('45-day pulse check'), t(' was sent to '), h("Liam O'Connor")],
+    category: 'New Hires',
   },
   {
-    employeeName: 'Caleb Nguyen',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=caleb-nguyen',
-    detail: 'I-9 Section 2 reminder sent to manager',
-    automationName: 'Missing Data Follow-up',
-    steps: [
-      'Detected Section 2 incomplete past 3-day deadline',
-      "Notified Caleb's manager with completion link",
-      'Tracking acknowledgement',
-    ],
+    automationId: 'birthday-anniversary',
+    icon: 'cake-candles-regular',
+    parts: [h('Birthday message'), t(' was sent to '), h('Hannah Nguyen')],
+    category: 'Recognition',
   },
   {
-    employeeName: 'Zoe Hernandez',
-    employeeAvatar: 'https://i.pravatar.cc/120?u=zoe-hernandez',
-    detail: 'Certification renewal scheduled',
-    automationName: 'Document Expiration Alerts',
-    steps: [
-      'PHR certification expires in 60 days',
-      'Sent renewal options and study guide link',
-      'Scheduled reminder for 30 days out',
-    ],
+    automationId: 'missing-data',
+    icon: 'building-columns-regular',
+    parts: [h('Direct deposit information'), t(' was updated for '), h('Raj Mehta')],
+    category: 'Payroll',
+  },
+  {
+    automationId: 'birthday-anniversary',
+    icon: 'cake-candles-regular',
+    parts: [h('8-year anniversary message'), t(' was drafted for '), h('Olivia Martinez')],
+    category: 'Recognition',
+  },
+  {
+    automationId: 'birthday-anniversary',
+    icon: 'cake-candles-regular',
+    parts: [h('Birthday message'), t(' was sent to '), h('Priya Patel')],
+    category: 'Recognition',
   },
 ];
 
-let _activityIdCounter = 1000;
-export function generateLiveActivity(): AutomationActivity {
+let _logIdCounter = 1000;
+
+export function generateLiveLogEntry(): AutomationLogEntry {
   const template =
-    activityTemplates[Math.floor(Math.random() * activityTemplates.length)];
-  _activityIdCounter += 1;
+    automationLogTemplates[Math.floor(Math.random() * automationLogTemplates.length)];
+  _logIdCounter += 1;
   return {
-    ...template,
-    id: `live-${_activityIdCounter}`,
-    status: 'in-progress',
-    timestamp: 'Working now…',
+    id: `log-live-${_logIdCounter}`,
+    automationId: template.automationId,
+    icon: template.icon,
+    parts: template.parts,
+    category: template.category,
+    timestamp: 'Just now',
   };
 }
